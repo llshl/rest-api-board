@@ -3,7 +3,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.example.restapiboard.repository.BoardMapper">
-    <select id="findAll" resultType="com.example.restapiboard.vo.BoardVo">
-        SELECT * FROM BOARD;
+    <select id="findAll" resultType="BoardVo">
+        SELECT * FROM BOARD
     </select>
+
+    <insert id="save" parameterType="BoardVo">
+        INSERT INTO
+            BOARD (TITLE, AUTHOR, CONTENT, LIKE_COUNT, DISLIKE_COUNT, DATE)
+        VALUES
+           (#{title}, #{author}, #{content}, #{like}, #{dislike}, #{date})
+    </insert>
 </mapper>
