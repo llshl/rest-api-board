@@ -13,4 +13,8 @@
         VALUES
            (#{title}, #{author}, #{content}, #{like}, #{dislike}, #{date})
     </insert>
+
+    <select id="findOne" parameterType="int" resultType="BoardVo">
+        SELECT * FROM BOARD WHERE ID = #{id}
+    </select>
 </mapper>

@@ -11,5 +11,5 @@ public interface BoardService {
 
     BoardVo createBoard(BoardDto boardDto, HttpServletRequest request);
     List<BoardVo> findBoards();
-    BoardVo findOneBoard(int id);
+    BoardVo findOne(int id);
 }

@@ -1,14 +1,14 @@
 package com.example.restapiboard.vo;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class BoardVo {
 
     //service단에서 조립되어 db에 들어가는 형태의 클래스

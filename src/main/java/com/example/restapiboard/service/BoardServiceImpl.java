@@ -41,12 +41,11 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public List<BoardVo> findBoards() {
-        log.info("2");
         return boardMapper.findAll();
     }
 
     @Override
-    public BoardVo findOneBoard(int id) {
+    public BoardVo findOne(int id) {
         return boardMapper.findOne(id);
     }
 }
