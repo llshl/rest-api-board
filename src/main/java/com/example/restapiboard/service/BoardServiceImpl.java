@@ -48,4 +48,9 @@ public class BoardServiceImpl implements BoardService {
     public BoardVo findOne(int id) {
         return boardMapper.findOne(id);
     }
+
+    @Override
+    public void deleteOne(int id) {
+        boardMapper.deleteOne(id);
+    }
 }

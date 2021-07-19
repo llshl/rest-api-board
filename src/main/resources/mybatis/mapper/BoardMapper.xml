@@ -15,6 +15,10 @@
     </insert>
 
     <select id="findOne" parameterType="int" resultType="BoardVo">
-        SELECT * FROM BOARD WHERE ID = #{id}
+        SELECT * FROM BOARD WHERE BOARD_ID = #{id}
+    </select>
+
+    <select id="deleteOne" parameterType="int">
+        DELETE FROM BOARD WHERE BOARD_ID = #{id}
     </select>
 </mapper>

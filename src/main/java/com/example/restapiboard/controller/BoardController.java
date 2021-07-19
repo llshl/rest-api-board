@@ -32,6 +32,8 @@ public class BoardController {
     }
 
     //게시글 작성하기
+    //작성하기일 경우에만 HTTP헤더의 Content-Location을 이용하여 만들어진 리소스 생성된 위치를 알려준다
+    //https://sanghaklee.tistory.com/61
     @PostMapping("/post")
     public ResponseEntity<BoardVo> createBoard(@RequestBody BoardDto boardDto, HttpServletRequest request){
         log.info("게시글 작성하기");
@@ -49,16 +51,26 @@ public class BoardController {
     @GetMapping("/list/{id}")
     public ResponseEntity<BoardVo> detail(@PathVariable("id") int id) {
         log.info("게시글 1개 조회");
-        /*URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(boardService.findOne(id))
                 .toUri();
 
         return ResponseEntity
                 .created(location)
-                .build();*/
-        BoardVo board = boardService.findOne(id);
+                .build();
+//        BoardVo board = boardService.findOne(id);
+//        return ResponseEntity
+//                .ok(board);
+    }
+
+    //게시글 삭제
+    @DeleteMapping("/list/{id}")
+    public ResponseEntity<BoardVo> deleteBoard(@PathVariable("id") int id) {
+        log.info("게시글 삭제");
+        boardService.deleteOne(id);
         return ResponseEntity
-                .ok(board);
+                .noContent()
+                .build();
     }
 }

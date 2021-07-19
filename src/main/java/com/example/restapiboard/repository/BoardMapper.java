@@ -14,10 +14,9 @@ import java.util.List;
 public interface BoardMapper {
 
     void save(BoardVo boardVo);
-
     List<BoardVo> findAll();
-
     BoardVo findOne(int id);
+    void deleteOne(int id);
 }
 
 /*
