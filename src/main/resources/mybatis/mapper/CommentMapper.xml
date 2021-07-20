@@ -3,7 +3,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.example.restapiboard.repository.CommentMapper">
-    <select id="findAll"  parameterType="int" resultType="CommentVo">
+    <select id="findAll" parameterType="int" resultType="CommentVo">
         SELECT * FROM COMMENT WHERE BOARD_ID = #{boardId}
     </select>
 
@@ -11,7 +11,7 @@
         INSERT INTO
             COMMENT (BOARD_ID, MEMBER_ID, CONTENT, LIKE_COUNT, DISLIKE_COUNT, DATE)
         VALUES
-           (#{boardId}, #{memberId}, #{content}, #{like}, #{dislike}, #{date})
+           (#{board_id}, #{member_id}, #{content}, #{like_count}, #{dislike_count}, #{date})
     </insert>
 
     <select id="update" parameterType="CommentVo">

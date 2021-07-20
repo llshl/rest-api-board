@@ -1,6 +1,5 @@
 package com.example.restapiboard.service;
 
-import com.example.restapiboard.config.UserInformation;
 import com.example.restapiboard.dto.CommentDto;
 import com.example.restapiboard.repository.CommentMapper;
 import com.example.restapiboard.vo.CommentVo;
@@ -14,36 +13,35 @@ import java.util.List;
 public class CommentServiceImpl implements CommentService{
 
     private final CommentMapper commentMapper;
-    private final UserInformation userInformation;
 
     @Override
     public CommentVo createComment(CommentDto commentDto) {
         CommentVo commentVo = CommentVo.builder()
                 .content(commentDto.getContent())
-                .boardId(commentDto.getBoardId())
-                .memberId(commentDto.getMemberId())
+                .board_id(commentDto.getBoardId())
+                .member_id(commentDto.getMemberId())
                 .date(LocalDateTime.now())
-                .like(0)
-                .dislike(0)
+                .like_count(0)
+                .dislike_count(0)
                 .build();
         commentMapper.save(commentVo);
         return commentVo;
     }
 
     @Override
-    public List<CommentVo> findComments(int id) {
-        return commentMapper.findAll(id);
+    public List<CommentVo> findComments(int boardId) {
+        return commentMapper.findAll(boardId);
     }
 
     @Override
     public CommentVo updateComment(CommentDto commentDto) {
         CommentVo commentVo = CommentVo.builder()
                 .content(commentDto.getContent())
-                .boardId(commentDto.getBoardId())
-                .memberId(commentDto.getMemberId())
+                .board_id(commentDto.getBoardId())
+                .member_id(commentDto.getMemberId())
                 .date(LocalDateTime.now())
-                .like(0)
-                .dislike(0)
+                .like_count(0)
+                .dislike_count(0)
                 .build();
         commentMapper.update(commentVo);
         return commentVo;

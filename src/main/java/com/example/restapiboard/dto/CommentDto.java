@@ -9,7 +9,7 @@ import lombok.Setter;
 @Builder
 public class CommentDto {
 
-    private Long boardId;
-    private Long memberId;
+    private int boardId;
+    private int memberId;
     private String content;
 }
