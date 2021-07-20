@@ -11,15 +11,14 @@ import java.time.LocalDateTime;
 @ToString
 public class CommentVo {
 
-    //service단에서 조립되어 db에 들어가는 형태의 클래스
-    //db에서 꺼내고 이 형태로 그대로 프론트로 나가는 클래스
-    private Long commentId;
-    private Long boardId;
-    private Long memberId;
+    //데이터베이스의 필드명과 같아야한다.
+    private int comment_id;
+    private int board_id;
+    private int member_id;
     private String content;
 
-    private int like;
-    private int dislike;
+    private int like_count;
+    private int dislike_count;
 
     private LocalDateTime date;
 }
