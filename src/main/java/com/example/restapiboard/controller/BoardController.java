@@ -39,7 +39,7 @@ public class BoardController {
         log.info("게시글 작성하기");
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(boardService.createBoard(boardDto,request).getId())//여기서 게시글 id가 반환 안돼서 location이 끝까지 완성이 안됨
+                .buildAndExpand(boardService.createBoard(boardDto,request).getBoard_id())//여기서 게시글 id가 반환 안돼서 location이 끝까지 완성이 안됨
                 .toUri();
 
         return ResponseEntity
@@ -51,17 +51,17 @@ public class BoardController {
     @GetMapping("/list/{id}")
     public ResponseEntity<BoardVo> detail(@PathVariable("id") int id) {
         log.info("게시글 1개 조회");
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(boardService.findOne(id))
-                .toUri();
-
-        return ResponseEntity
-                .created(location)
-                .build();
-//        BoardVo board = boardService.findOne(id);
+//        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+//                .path("/{id}")
+//                .buildAndExpand(boardService.findOne(id))
+//                .toUri();
+//
 //        return ResponseEntity
-//                .ok(board);
+//                .created(location)
+//                .build();
+        BoardVo board = boardService.findOne(id);
+        return ResponseEntity
+                .ok(board);
     }
 
     //게시글 삭제
