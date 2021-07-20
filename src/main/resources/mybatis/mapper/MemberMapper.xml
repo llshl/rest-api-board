@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.restapiboard.repository.MemberMapper">
+    <select id="findOne" parameterType="String" resultType="MemberVo">
+        SELECT * FROM MEMBER WHERE NICKNAME = #{nickname}
+    </select>
+
+    <insert id="save" parameterType="MemberVo">
+        INSERT INTO
+            MEMBER (LOGIN_ID, LOGIN_PASSWORD, EMAIL, NAME, NICKNAME)
+        VALUES
+           (#{login_id}, #{login_password}, #{email}, #{name}, #{nickname})
+    </insert>
+
+    <update id="nicknameUpdate" parameterType="MemberVo">
+        UPDATE MEMBER SET NICKNAME = #{nickname} WHERE MEMBER_ID = #{member_id}
+    </update>
+
+    <delete id="delete" parameterType="int">
+        DELETE FROM MEMBER WHERE MEMBER_ID = #{member_id}
+    </delete>
+
+    <select id="login" parameterType="String" resultType="MemberVo">
+        SELECT * FROM MEMBER WHERE LOGIN_ID = #{login_id}
+    </select>
+</mapper>
