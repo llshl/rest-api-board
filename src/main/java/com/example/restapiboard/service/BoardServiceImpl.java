@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -37,8 +39,11 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public List<BoardVo> findBoards() {
-        return boardMapper.findAll();
+    public List<BoardVo> findBoards(int displayPost, int postNum) {
+        Map<String, Integer> map = new HashMap<>();
+        map.put("displayPost", displayPost);
+        map.put("postNum", postNum);
+        return boardMapper.findAll(map);
     }
 
     @Override
@@ -49,5 +54,10 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public void deleteOne(int id) {
         boardMapper.deleteOne(id);
+    }
+
+    @Override
+    public int countAllBoard() {
+        return boardMapper.count();
     }
 }

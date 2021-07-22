@@ -10,7 +10,9 @@ import java.util.Map;
 public interface BoardService {
 
     BoardVo createBoard(BoardDto boardDto, HttpServletRequest request);
-    List<BoardVo> findBoards();
+    List<BoardVo> findBoards(int displayPost, int postNum);
     BoardVo findOne(int id);
     void deleteOne(int id);
+
+    int countAllBoard();
 }

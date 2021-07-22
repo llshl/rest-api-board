@@ -9,14 +9,18 @@ import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface BoardMapper {
 
     void save(BoardVo boardVo);
-    List<BoardVo> findAll();
+    List<BoardVo> findAll(Map map);
     BoardVo findOne(int id);
     void deleteOne(int id);
+
+    //게시글 총 개수 반환
+    int count();
 }
 
 /*

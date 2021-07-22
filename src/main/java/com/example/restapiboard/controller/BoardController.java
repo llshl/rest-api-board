@@ -1,6 +1,9 @@
 package com.example.restapiboard.controller;
 
+import com.example.restapiboard.config.Pagination;
 import com.example.restapiboard.dto.BoardDto;
+import com.example.restapiboard.dto.BoardListDto;
+import com.example.restapiboard.dto.PageDto;
 import com.example.restapiboard.service.BoardService;
 import com.example.restapiboard.vo.BoardVo;
 import lombok.RequiredArgsConstructor;
@@ -20,15 +23,23 @@ import java.util.List;
 @Slf4j
 public class BoardController {
 
+    // 한 페이지에 출력할 게시물 갯수
+    private final int POST_NUMBER_PER_PAGE = 10;
     private final BoardService boardService;
 
     //게시글 불러오기
     @GetMapping("/list")
-    public ResponseEntity<List<BoardVo>> showAllBoard(){
+    public ResponseEntity<BoardListDto> showAllBoard(@RequestParam(value = "num") int page){
         log.info("게시글 불러오기");
-        List<BoardVo> boards = boardService.findBoards();
+        int count = boardService.countAllBoard();   //게시글 총 개수
+        int displayPost = (page - 1) * POST_NUMBER_PER_PAGE;    //출력할 첫번째 게시글 인덱스
+
+        Pagination pagination = new Pagination();
+        BoardListDto boardListDto = pagination.listPagination(page,count);  //게시글(boardVo)를 제외한 페이징 정보 갖고있다.
+        boardListDto.setBoardVos(boardService.findBoards(displayPost,POST_NUMBER_PER_PAGE));     //boardVo 세팅
+
         return ResponseEntity
-                .ok(boards);
+                .ok(boardListDto);
     }
 
     //게시글 작성하기

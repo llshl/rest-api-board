@@ -71,11 +71,22 @@ public class MemberController {
     @DeleteMapping("/member/delete")
     public ResponseEntity<MemberVo> deleteMember(HttpServletRequest request) {
         log.info("회원 삭제");
+
         memberService.deleteMemebr(request);
         return ResponseEntity
                 .noContent()
                 .build();
     }
+
+//    //별명 검색
+//    @GetMapping("/member/{id}")
+//    public ResponseEntity<CommentVo> findOneByNickname(@PathVariable("id") int memberId) {
+//        log.info("회원 삭제");
+//        memberService.deleteMemebr(memberId);
+//        return ResponseEntity
+//                .noContent()
+//                .build();
+//    }
 
     //별명 중복검사
     //중복검사 결과를 true false로 반환하고 싶은데 이거를 어떤 포맷으로 반환하면 좋을지?

@@ -3,8 +3,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.example.restapiboard.repository.BoardMapper">
-    <select id="findAll" resultType="BoardVo">
+    <select id="findAll" parameterType="hashMap" resultType="BoardVo">
         SELECT * FROM BOARD
+        ORDER BY BOARD_ID DESC
+        LIMIT #{displayPost}, #{postNum}
     </select>
 
     <insert id="save" parameterType="BoardVo">
@@ -18,7 +20,11 @@
         SELECT * FROM BOARD WHERE BOARD_ID = #{id}
     </select>
 
-    <select id="deleteOne" parameterType="int">
+    <delete id="deleteOne" parameterType="int">
         DELETE FROM BOARD WHERE BOARD_ID = #{id}
+    </delete>
+
+    <select id="count" resultType="int">
+        SELECT count(BOARD_ID) FROM BOARD
     </select>
 </mapper>
