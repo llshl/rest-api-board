@@ -11,8 +11,12 @@ public interface BoardService {
 
     BoardVo createBoard(BoardDto boardDto, HttpServletRequest request);
     List<BoardVo> findBoards(int displayPost, int postNum);
+    BoardVo updateOne(BoardDto boardDto);
     BoardVo findOne(int id);
     void deleteOne(int id);
 
     int countAllBoard();
+    List<BoardVo> searchOne(String title);
+    void addLike(int id);
+    void addDislike(int id);
 }

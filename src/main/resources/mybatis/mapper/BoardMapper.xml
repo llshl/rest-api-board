@@ -11,14 +11,18 @@
 
     <insert id="save" parameterType="BoardVo">
         INSERT INTO
-            BOARD (TITLE, AUTHOR, CONTENT, LIKE_COUNT, DISLIKE_COUNT, DATE)
+            BOARD (TITLE, AUTHOR, CONTENT, ISUPDATED, DATE)
         VALUES
-           (#{title}, #{author}, #{content}, #{like}, #{dislike}, #{date})
+           (#{title}, #{author}, #{content}, #{isUpdated}, #{date})
     </insert>
 
     <select id="findOne" parameterType="int" resultType="BoardVo">
         SELECT * FROM BOARD WHERE BOARD_ID = #{id}
     </select>
+
+    <update id="update" parameterType="BoardVo">
+        UPDATE BOARD SET TITLE = #{title}, CONTENT = #{content}, ISUPDATED = #{isUpdated} WHERE BOARD_ID = #{board_id}
+    </update>
 
     <delete id="deleteOne" parameterType="int">
         DELETE FROM BOARD WHERE BOARD_ID = #{id}
@@ -27,4 +31,15 @@
     <select id="count" resultType="int">
         SELECT count(BOARD_ID) FROM BOARD
     </select>
+
+    <select id="search" parameterType="String" resultType="BoardVo">
+        SELECT * FROM BOARD WHERE TITLE LIKE CONCAT('%',#{title},'%')
+    </select>
+
+    <insert id="pressLike" parameterType="LikeVo">
+        INSERT INTO
+            _LIKE (PARENT_ID, MEMBER_ID, PARENT_TYPE, LIKE_TYPE)
+        VALUES
+            (#{parent_id}, #{member_id}, #{parent_type}, #{like_type})
+    </insert>
 </mapper>

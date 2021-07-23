@@ -13,14 +13,15 @@ public class BoardVo {
 
     //service단에서 조립되어 db에 들어가는 형태의 클래스
     //db에서 꺼내고 이 형태로 그대로 프론트로 나가는 클래스
-    private Long board_id;
+    private int board_id;
     private String title;
     private String author;
     private String content;
 
-    private int like_count;
-    private int dislike_count;
+//    private int like_count;
+//    private int dislike_count;
 
+    private boolean isUpdated;
     private LocalDateTime date;
 
     //좋아요 많이 받은 게시물 히트게시판 등록
