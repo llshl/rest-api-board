@@ -18,11 +18,12 @@ public class CommentServiceImpl implements CommentService{
     public CommentVo createComment(CommentDto commentDto) {
         CommentVo commentVo = CommentVo.builder()
                 .content(commentDto.getContent())
-                .board_id(commentDto.getBoardId())
-                .member_id(commentDto.getMemberId())
+                .board_id(commentDto.getBoard_id())
+                .member_id(commentDto.getMember_id())
                 .date(LocalDateTime.now())
                 .like_count(0)
                 .dislike_count(0)
+                .isUpdated(false)
                 .build();
         commentMapper.save(commentVo);
         return commentVo;
@@ -37,11 +38,8 @@ public class CommentServiceImpl implements CommentService{
     public CommentVo updateComment(CommentDto commentDto) {
         CommentVo commentVo = CommentVo.builder()
                 .content(commentDto.getContent())
-                .board_id(commentDto.getBoardId())
-                .member_id(commentDto.getMemberId())
-                .date(LocalDateTime.now())
-                .like_count(0)
-                .dislike_count(0)
+                .comment_id(commentDto.getComment_id())
+                .isUpdated(true)
                 .build();
         commentMapper.update(commentVo);
         return commentVo;

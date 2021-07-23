@@ -21,4 +21,6 @@ public class CommentVo {
     private int dislike_count;
 
     private LocalDateTime date;
+
+    private boolean isUpdated;
 }

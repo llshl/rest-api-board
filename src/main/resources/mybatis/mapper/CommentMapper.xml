@@ -4,21 +4,21 @@
 
 <mapper namespace="com.example.restapiboard.repository.CommentMapper">
     <select id="findAll" parameterType="int" resultType="CommentVo">
-        SELECT * FROM COMMENT WHERE BOARD_ID = #{boardId}
+        SELECT * FROM COMMENT WHERE BOARD_ID = #{board_id}
     </select>
 
     <insert id="save" parameterType="CommentVo">
         INSERT INTO
-            COMMENT (BOARD_ID, MEMBER_ID, CONTENT, LIKE_COUNT, DISLIKE_COUNT, DATE)
+            COMMENT (BOARD_ID, MEMBER_ID, CONTENT, LIKE_COUNT, DISLIKE_COUNT, ISUPDATED, DATE)
         VALUES
-           (#{board_id}, #{member_id}, #{content}, #{like_count}, #{dislike_count}, #{date})
+           (#{board_id}, #{member_id}, #{content}, #{like_count}, #{dislike_count}, #{isUpdated},  #{date})
     </insert>
 
     <select id="update" parameterType="CommentVo">
-        UPDATE COMMENT SET CONTENT = #{content}, DATE = #{date} WHERE COMMENT_ID = #{commentId}
+        UPDATE COMMENT SET CONTENT = #{content}, ISUPDATED = #{isUpdated} WHERE COMMENT_ID = #{comment_id}
     </select>
 
     <select id="delete" parameterType="int">
-        DELETE FROM COMMENT WHERE COMMENT_ID = #{commentId}
+        DELETE FROM COMMENT WHERE COMMENT_ID = #{comment_id}
     </select>
 </mapper>
