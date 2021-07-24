@@ -4,25 +4,23 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
+@Builder
 public class BoardDto {
 
     private int board_id;
 
     private String title;
     private String content;
+    private String author;
 
-    //view -> controller에서 받을때 사용할 빌더
-    @Builder
-    public BoardDto(String title, String content) {
-        this.title = title;
-        this.content = content;
-    }
+    private int like_count;
+    private int dislike_count;
 
-    @Override
-    public String toString() {
-        return "\ntitle: "+title
-                +"\ncontent: "+content;
-    }
+    private boolean isUpdated;
+    private boolean isPressedLikeOrDislike;      //좋아요 싫어요 버튼을 이미 눌렀는가?(1인 1회만 누를 수 있게 제한)
+    private LocalDateTime date;
 }

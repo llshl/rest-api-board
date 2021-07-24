@@ -13,6 +13,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -34,7 +35,7 @@ public class BoardController {
         Pagination pagination = new Pagination();
         BoardListDto boardListDto = pagination.listPagination(page,count);  //게시글(boardVo)를 제외한 페이징 정보 갖고있다.
         boardListDto.setBoardVos(boardService.findBoards(displayPost,POST_NUMBER_PER_PAGE));     //boardVo 세팅
-
+//        boardService.countLike()
         return ResponseEntity
                 .ok(boardListDto);
     }
@@ -56,9 +57,10 @@ public class BoardController {
     }
 
     //게시글 1개 내용보기
+    //게시글 1개 반환이지만 BoardListDto로 해도 될것같다?
     @GetMapping("/list/{id}")
-    public ResponseEntity<BoardVo> detailBoard(@PathVariable("id") int id) {
-        log.info(id+"번 게시글 1개 조회");
+    public ResponseEntity<BoardDto> detailBoard(@PathVariable("id") int id) {
+        log.info(id+"번 게시글 조회");
 //        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
 //                .path("/{id}")
 //                .buildAndExpand(boardService.findOne(id))
@@ -67,9 +69,9 @@ public class BoardController {
 //        return ResponseEntity
 //                .created(location)
 //                .build();
-        BoardVo board = boardService.findOne(id);
+        BoardDto boardDto = boardService.findOne(id);
         return ResponseEntity
-                .ok(board);
+                .ok(boardDto);
     }
 
     //게시글 수정
@@ -111,7 +113,7 @@ public class BoardController {
 
     //게시글 좋아요 누르기
     @PostMapping("/list/like/{id}")
-    public ResponseEntity<BoardListDto> pressLike(@PathVariable("id") int id){
+    public ResponseEntity<BoardListDto> pressLike(@PathVariable("id") int id){  //게시글번호가 들어온다
         log.info(id+"번 게시물 좋아요 처리");
         boardService.addLike(id);
 

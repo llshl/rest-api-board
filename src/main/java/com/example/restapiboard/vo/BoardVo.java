@@ -18,8 +18,8 @@ public class BoardVo {
     private String author;
     private String content;
 
-//    private int like_count;
-//    private int dislike_count;
+    private int like_count;
+    private int dislike_count;
 
     private boolean isUpdated;
     private LocalDateTime date;
