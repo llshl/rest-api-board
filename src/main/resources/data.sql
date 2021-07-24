@@ -60,20 +60,20 @@ VALUES (5, 2, 'ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ', false, CURRENT_TI
 
 
 INSERT INTO _LIKE(MEMBER_ID, PARENT_ID, PARENT_TYPE, LIKE_TYPE)
-VALUES (1, 2, 'board', 'like');
+VALUES (1, 2, true, false);
 
 INSERT INTO _LIKE(MEMBER_ID, PARENT_ID, PARENT_TYPE, LIKE_TYPE)
-VALUES (2, 5, 'board', 'like');
+VALUES (2, 5, true, true);
 
 INSERT INTO _LIKE(MEMBER_ID, PARENT_ID, PARENT_TYPE, LIKE_TYPE)
-VALUES (2, 1, 'comment', 'dislike');
+VALUES (2, 1, false, true);
 
 INSERT INTO _LIKE(MEMBER_ID, PARENT_ID, PARENT_TYPE, LIKE_TYPE)
-VALUES (3, 1, 'comment', 'dislike');
+VALUES (3, 1, true, false);
 
 INSERT INTO _LIKE(MEMBER_ID, PARENT_ID, PARENT_TYPE, LIKE_TYPE)
-VALUES (4, 2, 'comment', 'dislike');
+VALUES (4, 2, false, true);
 
 INSERT INTO _LIKE(MEMBER_ID, PARENT_ID, PARENT_TYPE, LIKE_TYPE)
-VALUES (4, 3, 'board', 'like');
+VALUES (4, 3, false, false);
 

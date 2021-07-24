@@ -1,4 +1,4 @@
-DROP TABLE BOARD,COMMENT,MEMBER,_LIKE,DISLIKE IF EXISTS;
+DROP TABLE BOARD,COMMENT,MEMBER,_LIKE IF EXISTS;
 CREATE TABLE BOARD(
     board_id INT AUTO_INCREMENT,
     title VARCHAR(100) NOT NULL,
@@ -30,7 +30,9 @@ CREATE TABLE _LIKE(
     like_id INT AUTO_INCREMENT,
     parent_id INT NOT NULL,
     member_id INT NOT NULL,
-    parent_type ENUM('board','comment') NOT NULL,
-    like_type ENUM('like','dislike') NOT NULL,
+--     parent_type ENUM('board','comment') NOT NULL,
+--     like_type ENUM('like','dislike') NOT NULL,
+    parent_type BOOLEAN NOT NULL,
+    like_type BOOLEAN NOT NULL,
     PRIMARY KEY (like_id)
 );
