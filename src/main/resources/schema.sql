@@ -15,6 +15,7 @@ CREATE TABLE MEMBER(
     email VARCHAR(100) NOT NULL,
     name VARCHAR(100) NOT NULL,
     nickname VARCHAR(500) NOT NULL,
+    kakao_id LONG,
     PRIMARY KEY (member_id)
 );
 CREATE TABLE COMMENT(
