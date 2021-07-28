@@ -6,7 +6,7 @@
 * MyBatis 2.2.0
 * MySQL
 
-![rest api board erd](https://user-images.githubusercontent.com/52540882/127374959-e207f0a2-144f-43be-b13b-da2a0c179685.jpg)
+![rest api board erd](https://user-images.githubusercontent.com/52540882/127375249-a698a718-1e0d-4681-83a3-e0ededc12ae6.jpg)
       
 
 ****
