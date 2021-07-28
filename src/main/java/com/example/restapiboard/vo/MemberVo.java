@@ -4,6 +4,7 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
+@Setter
 @Getter
 @Builder
 @NoArgsConstructor
@@ -18,4 +19,6 @@ public class MemberVo {
     private String email;
     private String name;
     private String nickname;
+
+    private Long kakao_id;
 }
