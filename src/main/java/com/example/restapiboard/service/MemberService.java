@@ -16,5 +16,6 @@ public interface MemberService {
     void updateNickname(String newNickname, HttpServletRequest request);
     void deleteMemebr(HttpServletRequest request);
 
-    String login(MemberDto memberDto, HttpSession session);
+    //String login(MemberDto memberDto, HttpSession session);
+    void kakaoLogin(String authorizedCode);
 }

@@ -1,10 +1,7 @@
 package com.example.restapiboard.controller;
 
-import com.example.restapiboard.dto.CommentDto;
 import com.example.restapiboard.dto.MemberDto;
-import com.example.restapiboard.service.CommentService;
 import com.example.restapiboard.service.MemberService;
-import com.example.restapiboard.vo.CommentVo;
 import com.example.restapiboard.vo.MemberVo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +11,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
