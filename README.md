@@ -16,7 +16,7 @@
 * 페이징 구현
 * Hateoas (예정)
 * Internationalization (예정)
-* Jenkins, Docker를 사용한 CI/CD 구축 (예정)
+* Jenkins를 사용한 CI/CD 구축 (예정)
 
 
 ****
