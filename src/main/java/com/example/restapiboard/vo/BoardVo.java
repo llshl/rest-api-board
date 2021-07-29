@@ -18,7 +18,7 @@ public class BoardVo {
     private String author;
     private String content;
 
-    private int like_count;
+    private int like_count;     //join 쿼리를 통해서 boardVo에 좋아요 싫어요 개수도 포함되게하자
     private int dislike_count;
 
     private boolean isUpdated;

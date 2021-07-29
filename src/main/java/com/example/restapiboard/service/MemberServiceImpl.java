@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -71,18 +72,17 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public void updateNickname(String newNickname, HttpServletRequest request) {
+    public void updateNickname(String newNickname, int memberId) {
         MemberVo memberVo = MemberVo.builder()
-                .member_id(memberInformation.getMemberId(request))
+                .member_id(memberId)
                 .nickname(newNickname)
                 .build();
         memberMapper.nicknameUpdate(memberVo);
     }
 
     @Override
-    public void deleteMemebr(HttpServletRequest request) {
-        int member_id = memberInformation.getMemberId(request);
-        memberMapper.delete(member_id);
+    public void deleteMemebr(int memberId) {
+        memberMapper.delete(memberId);
     }
 
     public void kakaoLogin(String authorizedCode) {

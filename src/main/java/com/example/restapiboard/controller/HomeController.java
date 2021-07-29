@@ -16,9 +16,9 @@ import java.security.Principal;
 public class HomeController {
 
     @GetMapping("/")
-    public String home(Model model, @AuthenticationPrincipal MemberDetailsImpl memberDetails, Principal principal){
+    public String home(Model model, @AuthenticationPrincipal MemberDetailsImpl memberDetails){
         model.addAttribute("username", memberDetails.getUsername());
-        System.out.println("멤버 id 반환 되나? "+memberDetails.getMemberVo().getMember_id());
-        return "index";
+        System.out.println("member_id: "+memberDetails.getMemberVo().getMember_id());
+        return "indextest";
     }
 }
