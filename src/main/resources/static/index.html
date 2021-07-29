@@ -17,23 +17,71 @@
 <body>
 <div class="header" style="position:relative;">
     <div id="header-title-login-user">
-        <span th:text="${username}"></span> 님의
+        어서오세요 <span th:text="${username}"></span> 님!
     </div>
     <div id="header-title-select-shop">
-        Select Shop
+        KPU inside 게시판
     </div>
     <a id="logout-text" href="/user/logout">
         로그아웃
     </a>
 </div>
-<div class="nav">
-    <div class="nav-see active">
-        모아보기
-    </div>
-    <div class="nav-search">
-        탐색하기
+
+<div class="ui middle aligned center aligned grid">
+    <div class="column">
+        <!-- <h1 class="section-heading text-uppercase" align="center">게시판</h1> -->
+        <br>
+        <div class="ui middle aligned center aligned grid">
+            <div class="ui middle aligned center aligned grid">
+            </div>
+            <div class="ui middle aligned center aligned grid">
+                <table class="ui celled table">
+                    <thead>
+                        <tr>
+                            <th width="120">번호</th>
+                            <th width="150">제목</th>
+                            <th width="50">작성자</th>
+                            <th width="50">등록일</th>
+                        </tr>
+                    </thead>
+                    <br>
+                    <tbody id="list">
+                    </tbody>
+                </table>
+            </div>
+            <div class="ui middle aligned center aligned grid" style="text-align: right">
+                <a href="/board/createBoard"><button class="btn btn-primary btn-xl text-uppercase js-scroll-trigger">게시글 작성하기</button></a>
+            </div>
+            <div class="ui error message"></div>
+
+        </div>
     </div>
 </div>
+
+<div class="container">
+    <div class = "row">
+        <table class = "table table-striped" style="text-align:center; border:1px solid #dddddd">
+            <thead>
+                <tr>
+                    <th style = "background-color:#eeeeee; text-align:center;">번호</th>
+                    <th style = "background-color:#eeeeee; text-align:center;">제목</th>
+                    <th style = "background-color:#eeeeee; text-align:center;">작성자</th>
+                    <th style = "background-color:#eeeeee; text-align:center;">작성일</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                <td>1</td>
+                <td>안녕하세요.</td>
+                <td>홍길동</td>
+                <td>2020-06-17</td>
+                </tr>
+            </tbody>
+        </table>
+    <a href="http://localhost:8080/create" class ="btn btn-primary pull-right">글쓰기</a>
+    </div>
+</div>
+
 <div id="see-area">
     <div id="product-container">
     </div>
