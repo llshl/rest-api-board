@@ -12,6 +12,10 @@ spring:
   thymeleaf:
     prefix : classpath:/static/
     suffix : .html
+    cache: false
+  devtools:
+    livereload:
+      enabled: true
 
 mybatis:
   type-aliases-package: com.example.restapiboard.vo
