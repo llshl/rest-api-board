@@ -21,4 +21,10 @@ public class HomeController {
         System.out.println("member_id: "+memberDetails.getMemberVo().getMember_id());
         return "indextest";
     }
+
+    @GetMapping("/write")
+    public String writeBoard(Model model, @AuthenticationPrincipal MemberDetailsImpl memberDetails){
+        model.addAttribute("username", memberDetails.getUsername());
+        return "writeboard";
+    }
 }
