@@ -2,6 +2,11 @@ package com.example.restapiboard;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.i18n.SessionLocaleResolver;
+
+import java.util.Locale;
 
 @SpringBootApplication
 public class RestApiBoardApplication {
@@ -10,4 +15,10 @@ public class RestApiBoardApplication {
         SpringApplication.run(RestApiBoardApplication.class, args);
     }
 
+    @Bean
+    public LocaleResolver localeResolver(){
+        SessionLocaleResolver localeResolver = new SessionLocaleResolver();
+        localeResolver.setDefaultLocale(Locale.KOREA);  //default
+        return localeResolver;
+    }
 }
