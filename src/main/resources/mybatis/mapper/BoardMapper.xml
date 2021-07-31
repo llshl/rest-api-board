@@ -15,7 +15,7 @@
         LIMIT #{displayPost}, #{postNum}
     </select>
 
-    <insert id="save" parameterType="BoardVo">
+    <insert id="save" parameterType="BoardVo" useGeneratedKeys="true" keyProperty="board_id">
         INSERT INTO
             BOARD (TITLE, AUTHOR, CONTENT, ISUPDATED, DATE)
         VALUES
