@@ -21,8 +21,6 @@ public class CommentServiceImpl implements CommentService{
                 .board_id(commentDto.getBoard_id())
                 .member_id(commentDto.getMember_id())
                 .date(LocalDateTime.now())
-                .like_count(0)
-                .dislike_count(0)
                 .isUpdated(false)
                 .build();
         commentMapper.save(commentVo);

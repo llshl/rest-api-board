@@ -7,13 +7,21 @@ import com.example.restapiboard.vo.BoardVo;
 import com.example.restapiboard.vo.CommentVo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,57 +29,65 @@ import java.util.List;
 public class CommentController {
 
     private final CommentService commentService;
-
-    //ajax
-    //해당 게시물의 댓글들 불러오기
-    @GetMapping("/comment/{id}")
-    public ResponseEntity<List<CommentVo>> showAllComments(@PathVariable("id") int boardId){
-        log.info(boardId+"번 게시글의 댓글 불러오기");
-        List<CommentVo> comments = commentService.findComments(boardId);
-        return ResponseEntity
-                .ok(comments);
+    private WebMvcLinkBuilder getLinkAddress() {
+        return linkTo(BoardController.class);
     }
 
-    //ajax
-    //댓글 작성하기
-    //작성하기일 경우에만 HTTP헤더의 Content-Location을 이용하여 만들어진 리소스 생성된 위치를 알려준다
-    //https://sanghaklee.tistory.com/61
-    @PostMapping("/comment/post")
-    public ResponseEntity<CommentVo> createComment(@RequestBody CommentDto commentDto){
-        log.info(commentDto.getBoard_id()+"번 게시물에 댓글 작성하기");
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(commentService.createComment(commentDto))//여기서 게시글 id가 반환 안돼서 location이 끝까지 완성이 안됨
-                .toUri();
-//
-//        return ResponseEntity
-//                .created(location)
-//                .build();
-//        CommentVo commentVo = commentService.createComment(commentDto);
+    //해당 게시물의 댓글들 불러오기
+    @GetMapping("/comment/{id}")
+    public ResponseEntity showAllComments(@PathVariable("id") int boardId){
+        log.info(boardId+"번 게시글의 댓글 불러오기");
+        List<CommentVo> comments = commentService.findComments(boardId);
+        List<EntityModel> collect = comments.stream()
+                .map(commnet -> EntityModel.of(commnet,
+                        getLinkAddress().slash(commnet.getComment_id()).withRel("update"),
+                        getLinkAddress().slash(commnet.getComment_id()).withRel("delete")))
+                .collect(Collectors.toList());
+        CollectionModel entityModel = CollectionModel.of(collect,
+                getLinkAddress().withSelfRel());
         return ResponseEntity
-                .created(location)
-                .build();
+                .ok(entityModel);
+    }
+
+    //댓글 작성하기
+    @PostMapping("/comment/post")
+    public ResponseEntity createComment(@RequestBody CommentDto commentDto){
+        log.info(commentDto.getBoard_id()+"번 게시물에 댓글 작성하기");
+        CommentVo comment = commentService.createComment(commentDto);
+        URI createdURI = getLinkAddress().slash(comment.getComment_id()).toUri();
+        EntityModel<CommentVo> entityModel = EntityModel.of(comment,
+                getLinkAddress().slash(comment.getComment_id()).withSelfRel(),
+                getLinkAddress().slash(comment.getComment_id()).withRel("get"),
+                getLinkAddress().slash(comment.getComment_id()).withRel("delete"),
+                getLinkAddress().slash(comment.getComment_id()).withRel("update"));
+
+        return ResponseEntity
+                .created(createdURI)
+                .body(entityModel);
     }
 
     //댓글 수정
     @PutMapping("/comment/{id}")
-    public ResponseEntity<CommentVo> updateCommnet(@RequestBody CommentDto commentDto, @PathVariable("id") int id) {
+    public ResponseEntity updateCommnet(@RequestBody CommentDto commentDto, @PathVariable("id") int id) {
         log.info(id+"번 게시글 수정");
         commentDto.setComment_id(id);
         CommentVo commentVo = commentService.updateComment(commentDto);
+        EntityModel entityModel = EntityModel.of(commentVo,
+                getLinkAddress().slash(commentVo.getComment_id()).withSelfRel());
         return ResponseEntity
-                .ok(commentVo);
+                .ok(entityModel);
     }
 
-    //ajax
-    //자바스크립트에서 이거 실행 후 페이지 리로딩 하자
     //게시글 삭제
     @DeleteMapping("/comment/{id}")
-    public ResponseEntity<CommentVo> deleteComment(@PathVariable("id") int commentId) {
-        log.info(commentId+"번 댓글 삭제");
-        commentService.deleteOne(commentId);
+    public ResponseEntity deleteComment(@PathVariable("id") int id) {
+        log.info(id+"번 댓글 삭제");
+        commentService.deleteOne(id);
+        Map<String, Integer> resultMap = new HashMap<>();
+        resultMap.put("deletedId", id);
+        EntityModel entityModel = EntityModel.of(resultMap,
+                getLinkAddress().slash(id).withSelfRel());
         return ResponseEntity
-                .noContent()
-                .build();
+                .ok(entityModel);
     }
 }

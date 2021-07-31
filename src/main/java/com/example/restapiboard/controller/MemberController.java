@@ -1,18 +1,19 @@
 package com.example.restapiboard.controller;
 
-import com.example.restapiboard.dto.MemberDto;
 import com.example.restapiboard.security.MemberDetailsImpl;
 import com.example.restapiboard.service.MemberService;
 import com.example.restapiboard.vo.MemberVo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import java.util.HashMap;
+import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import java.net.URI;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,42 +21,48 @@ import java.net.URI;
 public class MemberController {
 
     private final MemberService memberService;
+    private WebMvcLinkBuilder getLinkAddress() {
+        return linkTo(BoardController.class);
+    }
 
     //회원검색
-    //이거 검색쿼리로 만들자
     @GetMapping("/member/{id}")
-    public ResponseEntity<MemberVo> findOne(@PathVariable("id") String nickname){
+    public ResponseEntity findOne(@PathVariable("id") String nickname){
         log.info("회원 검색");
         MemberVo memberVo =  memberService.findMember(nickname);
-        //헤테오스 적용
+        EntityModel entityModel = EntityModel.of(memberVo,
+                getLinkAddress().slash(memberVo.getMember_id()).withSelfRel(),
+                getLinkAddress().withRel("list"));
         return ResponseEntity
-                .ok(memberVo);
+                .ok(entityModel);
     }
 
     //넥네임 변경
-    //변경할 닉네임을 파라미터 받아서 서비스단에서 키(세션의 회원id)와 값(새로바꿀 닉네임)을 매퍼로 넘겨줌
     @PutMapping("/member/{newNickname}")
-    public ResponseEntity<MemberVo> updateNickname(@PathVariable("newNickname") String newNickname,
+    public ResponseEntity updateNickname(@PathVariable("newNickname") String newNickname,
                                                    @AuthenticationPrincipal MemberDetailsImpl memberDetails){
         log.info("닉네임 변경");
         memberService.updateNickname(newNickname,memberDetails.getMemberVo().getMember_id());
-        //헤테오스 적용
+        Map<String, String> resultMap = new HashMap<>();
+        resultMap.put("updated Nickname", newNickname);
+        EntityModel entityModel = EntityModel.of(resultMap,
+                getLinkAddress().slash(newNickname).withSelfRel());
         return ResponseEntity
-                .noContent()
-                .build();
+                .ok(entityModel);
     }
 
     //회원삭제
-    //이거 id를 어케알지? => 세션에있는 id로 삭제, 어자피 자기자신 삭제니까
-    //세션에 아무 값 없으면 널포인트익셉션 발생
-    @DeleteMapping("/member/delete")
-    public ResponseEntity<MemberVo> deleteMember(@AuthenticationPrincipal MemberDetailsImpl memberDetails) {
+    @DeleteMapping("/member/{id}")
+    public ResponseEntity deleteMember(@PathVariable("id") int id) {
         log.info("회원 삭제");
-
-        memberService.deleteMemebr(memberDetails.getMemberVo().getMember_id());
+        memberService.deleteMemebr(id);
+        Map<String, Integer> resultMap = new HashMap<>();
+        resultMap.put("dislikedId", id);
+        EntityModel entityModel = EntityModel.of(resultMap,
+                getLinkAddress().slash(id).withSelfRel(),
+                getLinkAddress().withRel("list"));
         return ResponseEntity
-                .noContent()
-                .build();
+                .ok(entityModel);
     }
 
 //    //별명 검색

@@ -7,91 +7,115 @@ import com.example.restapiboard.service.BoardService;
 import com.example.restapiboard.vo.BoardVo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.MessageSource;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 @RestController
 @RequiredArgsConstructor
 @Slf4j
 public class BoardController {
 
-    // 한 페이지에 출력할 게시물 갯수
     private final int POST_NUMBER_PER_PAGE = 10;
     private final BoardService boardService;
+    private final MessageSource messageSource;
+    private WebMvcLinkBuilder getLinkAddress() {
+        return linkTo(BoardController.class);
+    }
 
     //게시글 불러오기
-    @GetMapping("/list")
-    public ResponseEntity<BoardListDto> showAllBoard(@RequestParam(value = "page", defaultValue = "1") int page){
+    @GetMapping(value = "/list")
+    public ResponseEntity showAllBoard(@RequestParam(value = "page", defaultValue = "1") int page){
         log.info("게시글 불러오기");
         int count = boardService.countAllBoard();   //게시글 총 개수
         int displayPost = (page - 1) * POST_NUMBER_PER_PAGE;    //해당 페이지에 출력할 첫번째 게시글 인덱스
 
-        Pagination pagination = new Pagination();
-        BoardListDto boardListDto = pagination.listPagination(page,count);  //게시글(boardVo)를 제외한 페이징 정보 갖고있다.
+        //Pagination pagination = new Pagination();
+        BoardListDto boardListDto = Pagination.listPagination(page,count);  //게시글(boardVo)를 제외한 페이징 정보 갖고있다.
         boardListDto.setBoardVos(boardService.findBoards(displayPost,POST_NUMBER_PER_PAGE));     //boardVo 세팅
-//        boardService.countLike()
+
+        List<EntityModel> collect = boardListDto.getBoardVos().stream()
+                .map(board -> EntityModel.of(board, getLinkAddress().slash(board.getBoard_id()).withRel("get")))
+                .collect(Collectors.toList());
+
+        // 리스트를 CollectionModel로 변환. -> response body에 담는다.
+        CollectionModel entityModel = CollectionModel.of(collect,
+                getLinkAddress().slash("post").withRel("post"),
+                getLinkAddress().withSelfRel());
         return ResponseEntity
-                .ok(boardListDto);
+                .ok(entityModel);
     }
 
     //게시글 작성하기
-    //작성하기일 경우에만 HTTP헤더의 Content-Location을 이용하여 만들어진 리소스 생성된 위치를 알려준다
     //https://sanghaklee.tistory.com/61
     @PostMapping("/post")
-    public ResponseEntity<BoardVo> createBoard(@RequestBody BoardDto boardDto, HttpServletRequest request){
+    public ResponseEntity createBoard(@RequestBody BoardDto boardDto, HttpServletRequest request){
         log.info("게시글 작성하기");
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(boardService.createBoard(boardDto,request).getBoard_id())//여기서 게시글 id가 반환 안돼서 location이 끝까지 완성이 안됨
-                .toUri();
+        BoardVo board = boardService.createBoard(boardDto, request);    //request빼기
+        URI createdURI = getLinkAddress().slash(board.getBoard_id()).toUri();
+        EntityModel<BoardVo> entityModel = EntityModel.of(board,
+                getLinkAddress().slash(board.getBoard_id()).withSelfRel(),
+                getLinkAddress().slash(board.getBoard_id()).withRel("get"),
+                getLinkAddress().slash(board.getBoard_id()).withRel("delete"),
+                getLinkAddress().slash(board.getBoard_id()).withRel("update"));
 
-        return ResponseEntity
-                .created(location)
-                .build();
+        return ResponseEntity.created(createdURI).body(entityModel);
     }
 
     //게시글 1개 내용보기
     //게시글 1개 반환이지만 BoardListDto로 해도 될것같다?
     @GetMapping("/list/{id}")
-    public ResponseEntity<BoardDto> detailBoard(@PathVariable("id") int id) {
+    public ResponseEntity detailBoard(@PathVariable("id") int id) {
         log.info(id+"번 게시글 조회");
-//        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-//                .path("/{id}")
-//                .buildAndExpand(boardService.findOne(id))
-//                .toUri();
-//
-//        return ResponseEntity
-//                .created(location)
-//                .build();
         BoardDto boardDto = boardService.findOne(id);
+        EntityModel entityModel = EntityModel.of(boardDto,
+                getLinkAddress().slash(boardDto.getBoard_id()).withSelfRel(),
+                getLinkAddress().slash(boardDto.getBoard_id()).withRel("update"),
+                getLinkAddress().slash(boardDto.getBoard_id()).withRel("delete"),
+                getLinkAddress().withRel("list"));
         return ResponseEntity
-                .ok(boardDto);
+                .ok(entityModel);
     }
 
     //게시글 수정
     @PutMapping("/list/{id}")
-    public ResponseEntity<BoardVo> updateBoard(@RequestBody BoardDto boardDto, @PathVariable("id") int id) {
+    public ResponseEntity updateBoard(@RequestBody BoardDto boardDto, @PathVariable("id") int id) {
         log.info(id+"번 게시글 수정");
         boardDto.setBoard_id(id);
         BoardVo board = boardService.updateOne(boardDto);
+        EntityModel entityModel = EntityModel.of(board,
+                getLinkAddress().slash(board.getBoard_id()).withSelfRel());
         return ResponseEntity
-                .ok(board);
+                .ok(entityModel);
     }
 
     //게시글 삭제
     @DeleteMapping("/list/{id}")
-    public ResponseEntity<BoardVo> deleteBoard(@PathVariable("id") int id) {
+    public ResponseEntity deleteBoard(@PathVariable("id") int id) {
         log.info(id+"번 게시글 삭제");
         boardService.deleteOne(id);
+        Map<String, Integer> resultMap = new HashMap<>();
+        resultMap.put("deletedId", id);
+        EntityModel entityModel = EntityModel.of(resultMap,
+                getLinkAddress().slash(id).withSelfRel());
         return ResponseEntity
-                .noContent()
-                .build();
+                .ok(entityModel);
     }
 
     //게시글 검색
@@ -104,8 +128,8 @@ public class BoardController {
         int displayPost = (page - 1) * POST_NUMBER_PER_PAGE;
 
         Pagination pagination = new Pagination();
-        BoardListDto boardListDto = pagination.listPagination(page,count);  //게시글(boardVo)를 제외한 페이징 정보 갖고있다.
-        boardListDto.setBoardVos(boardService.findBoards(displayPost,POST_NUMBER_PER_PAGE));     //boardVo 세팅
+        BoardListDto boardListDto = pagination.listPagination(page,count);
+        boardListDto.setBoardVos(boardService.findBoards(displayPost,POST_NUMBER_PER_PAGE));
         return ResponseEntity
                 .ok(boardListDto);
     }
@@ -113,28 +137,28 @@ public class BoardController {
 
     //게시글 좋아요 누르기
     @PostMapping("/list/like/{id}")
-    public ResponseEntity<BoardListDto> pressLike(@PathVariable("id") int id){  //게시글번호가 들어온다
+    public ResponseEntity pressLike(@PathVariable("id") int id){  //게시글번호가 들어온다
         log.info(id+"번 게시물 좋아요 처리");
         boardService.addLike(id);
-
-        //헤테오스 적용
-
+        Map<String, Integer> resultMap = new HashMap<>();
+        resultMap.put("likedId", id);
+        EntityModel entityModel = EntityModel.of(resultMap,
+                getLinkAddress().slash(id).withSelfRel(),
+                getLinkAddress().withRel("list"));
         return ResponseEntity
-                .noContent()
-                .build();
+                .ok(entityModel);
     }
 
-    //게시글 싫어요 누르기 =>이거 좋아요 누르기랑 통일할수있을까? LikeType이 LIKE냐 DISLIKE냐의 차이만 있다.
     @PostMapping("/list/dislike/{id}")
-    public ResponseEntity<BoardListDto> pressDislike(@PathVariable("id") int id){
+    public ResponseEntity pressDislike(@PathVariable("id") int id){
         log.info(id+"번 게시물 싫어요 처리");
         boardService.addDislike(id);
-
-        //헤테오스 적용
-
-
+        Map<String, Integer> resultMap = new HashMap<>();
+        resultMap.put("dislikedId", id);
+        EntityModel entityModel = EntityModel.of(resultMap,
+                getLinkAddress().slash(id).withSelfRel(),
+                getLinkAddress().withRel("list"));
         return ResponseEntity
-                .noContent()
-                .build();
+                .ok(entityModel);
     }
 }

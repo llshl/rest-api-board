@@ -7,11 +7,11 @@
         SELECT * FROM COMMENT WHERE BOARD_ID = #{board_id}
     </select>
 
-    <insert id="save" parameterType="CommentVo">
+    <insert id="save" parameterType="CommentVo" useGeneratedKeys="true" keyProperty="comment_id">
         INSERT INTO
-            COMMENT (BOARD_ID, MEMBER_ID, CONTENT, LIKE_COUNT, DISLIKE_COUNT, ISUPDATED, DATE)
+            COMMENT (BOARD_ID, MEMBER_ID, CONTENT, ISUPDATED, DATE)
         VALUES
-           (#{board_id}, #{member_id}, #{content}, #{like_count}, #{dislike_count}, #{isUpdated},  #{date})
+           (#{board_id}, #{member_id}, #{content}, #{isUpdated},  #{date})
     </insert>
 
     <select id="update" parameterType="CommentVo">
