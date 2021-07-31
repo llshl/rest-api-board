@@ -15,7 +15,6 @@
 <body>
 <div id="login-form">
     <div id="login-title" align="center">게시글 작성</div>
-    <!--<form action="/user/login" method="post">-->
     <form>
         <div class="login-id-label">제목</div>
         <input type="text" name="title" id="title" class="login-input-box" placeholder="제목을 입력하세요">
@@ -23,7 +22,7 @@
         <div class="login-id-label">내용</div>
         <textarea cols="50" rows="10" id="content" placeholder="내용을 입력하세요" class="textareaa"></textarea>
 
-        <button class ="btn btn-primary pull-right" type="submit" id="submitBoard">등록하기</button>
+        <button class ="btn btn-primary pull-right" id="submitBoard">등록하기</button>
     </form>
 </div>
 
@@ -37,7 +36,7 @@
 
             for(var str in json){
                 if(json[str].length == 0){
-                    alert($("#" + str).attr("placeholder") + "를 입력해주세요.");
+                    alert($("#" + str).attr("placeholder"));
                     $("#" + str).focus();
                     return;
                 }
@@ -61,6 +60,5 @@
     });
 </script>
 
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 </body>
 </html>
