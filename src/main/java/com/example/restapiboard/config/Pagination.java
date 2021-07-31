@@ -4,7 +4,7 @@ import com.example.restapiboard.dto.BoardListDto;
 
 public class Pagination {
 
-    public BoardListDto listPagination(int currentPageNum, int count){
+    public static BoardListDto listPagination(int currentPageNum, int count){
 
         // 한번에 표시할 페이징 번호의 갯수
         int pageNum_cnt = 10;
