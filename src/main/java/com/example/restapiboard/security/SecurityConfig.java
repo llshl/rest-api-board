@@ -23,7 +23,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
         http.headers().frameOptions().disable();
-
+/*
         http.authorizeRequests()
                 // image 폴더를 login 없이 허용
                 .antMatchers("/images/**").permitAll()  //image로 시작하는 모든 부분들은 인증없이 접근가능
@@ -48,7 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .exceptionHandling()    //인가가 안된 사용자일 경우
                 .accessDeniedPage("/user/forbidden");   //포비든 페이지로 이동
-
+*/
     }
 
     @Bean
