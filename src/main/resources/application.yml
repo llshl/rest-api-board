@@ -16,6 +16,8 @@ spring:
   devtools:
     livereload:
       enabled: true
+  messages:
+    basename: messages
 
 mybatis:
   type-aliases-package: com.example.restapiboard.vo
