@@ -1,5 +1,7 @@
 package com.example.restapiboard.exception;
 
+import com.example.restapiboard.exception.MemberException.DuplicatedLoginxception;
+import com.example.restapiboard.exception.MemberException.MemberNotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,6 +43,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 new ExceptionResponse((new Date()), ex.getMessage(), request.getDescription(false));
 
         return new ResponseEntity(exceptionResponse, HttpStatus.FORBIDDEN); //403코드
+    }
+
+    //BoardNotFoundException 대한 처리 메서드
+    @ExceptionHandler(BoardNotFoundException.class)
+    public final ResponseEntity<Object> handleBoardNotFoundException(Exception ex, WebRequest request) {
+        ExceptionResponse exceptionResponse =
+                new ExceptionResponse((new Date()), ex.getMessage(), request.getDescription(false));
+
+        return new ResponseEntity(exceptionResponse, HttpStatus.NOT_FOUND); //403코드
     }
 
     //handleMethodArgumentNotValid를 재정의하여 유효성검사(Valid)에 걸리면 반환되는 예외
