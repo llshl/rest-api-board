@@ -50,14 +50,13 @@ public class CommentController {
     }
 
     //댓글 작성하기
-    @PostMapping("/comment/post")
+    @PostMapping("/comment")
     public ResponseEntity createComment(@RequestBody CommentDto commentDto){
         log.info(commentDto.getBoard_id()+"번 게시물에 댓글 작성하기");
         CommentVo comment = commentService.createComment(commentDto);
         URI createdURI = getLinkAddress().slash(comment.getComment_id()).toUri();
         EntityModel<CommentVo> entityModel = EntityModel.of(comment,
                 getLinkAddress().slash(comment.getComment_id()).withSelfRel(),
-                getLinkAddress().slash(comment.getComment_id()).withRel("get"),
                 getLinkAddress().slash(comment.getComment_id()).withRel("delete"),
                 getLinkAddress().slash(comment.getComment_id()).withRel("update"));
 
@@ -71,9 +70,9 @@ public class CommentController {
     public ResponseEntity updateCommnet(@RequestBody CommentDto commentDto, @PathVariable("id") int id) {
         log.info(id+"번 게시글 수정");
         commentDto.setComment_id(id);
-        CommentVo commentVo = commentService.updateComment(commentDto);
-        EntityModel entityModel = EntityModel.of(commentVo,
-                getLinkAddress().slash(commentVo.getComment_id()).withSelfRel());
+       commentService.updateComment(commentDto);
+        EntityModel entityModel = EntityModel.of(id,
+                getLinkAddress().slash(id).withSelfRel());
         return ResponseEntity
                 .ok(entityModel);
     }

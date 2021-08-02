@@ -64,7 +64,7 @@ public class BoardController {
 
     //게시글 작성하기
     //https://sanghaklee.tistory.com/61
-    @PostMapping("/post")
+    @PostMapping("/list")
     public ResponseEntity createBoard(@RequestBody BoardDto boardDto, HttpServletRequest request){
         log.info("게시글 작성하기");
         BoardVo board = boardService.createBoard(boardDto, request);    //request빼기
@@ -98,9 +98,11 @@ public class BoardController {
     public ResponseEntity updateBoard(@RequestBody BoardDto boardDto, @PathVariable("id") int id) {
         log.info(id+"번 게시글 수정");
         boardDto.setBoard_id(id);
-        BoardVo board = boardService.updateOne(boardDto);
-        EntityModel entityModel = EntityModel.of(board,
-                getLinkAddress().slash(board.getBoard_id()).withSelfRel());
+        boardService.updateOne(boardDto);
+        Map<String, Integer> resultMap = new HashMap<>();
+        resultMap.put("updatedId", id);
+        EntityModel entityModel = EntityModel.of(resultMap,
+                getLinkAddress().slash(id).withSelfRel());
         return ResponseEntity
                 .ok(entityModel);
     }
@@ -132,33 +134,5 @@ public class BoardController {
         boardListDto.setBoardVos(boardService.findBoards(displayPost,POST_NUMBER_PER_PAGE));
         return ResponseEntity
                 .ok(boardListDto);
-    }
-
-
-    //게시글 좋아요 누르기
-    @PostMapping("/list/like/{id}")
-    public ResponseEntity pressLike(@PathVariable("id") int id){  //게시글번호가 들어온다
-        log.info(id+"번 게시물 좋아요 처리");
-        boardService.addLike(id);
-        Map<String, Integer> resultMap = new HashMap<>();
-        resultMap.put("likedId", id);
-        EntityModel entityModel = EntityModel.of(resultMap,
-                getLinkAddress().slash(id).withSelfRel(),
-                getLinkAddress().withRel("list"));
-        return ResponseEntity
-                .ok(entityModel);
-    }
-
-    @PostMapping("/list/dislike/{id}")
-    public ResponseEntity pressDislike(@PathVariable("id") int id){
-        log.info(id+"번 게시물 싫어요 처리");
-        boardService.addDislike(id);
-        Map<String, Integer> resultMap = new HashMap<>();
-        resultMap.put("dislikedId", id);
-        EntityModel entityModel = EntityModel.of(resultMap,
-                getLinkAddress().slash(id).withSelfRel(),
-                getLinkAddress().withRel("list"));
-        return ResponseEntity
-                .ok(entityModel);
     }
 }
