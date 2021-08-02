@@ -27,7 +27,17 @@
     </select>
 
     <update id="update" parameterType="BoardVo">
-        UPDATE BOARD SET TITLE = #{title}, CONTENT = #{content}, ISUPDATED = #{isUpdated} WHERE BOARD_ID = #{board_id}
+        UPDATE BOARD
+        SET
+            ISUPDATED = #{isUpdated}
+            <if test="title != null">
+                TITLE = #{title}
+            </if>,
+            <if test="content != null">
+                CONTENT = #{content}
+            </if>
+        WHERE
+              BOARD_ID = #{board_id}
     </update>
 
     <delete id="deleteOne" parameterType="int">
@@ -41,31 +51,4 @@
     <select id="search" parameterType="String" resultType="BoardVo">
         SELECT * FROM BOARD WHERE TITLE LIKE CONCAT('%',#{title},'%')
     </select>
-
-    <insert id="pressLike" parameterType="LikeVo">
-        INSERT INTO
-            _LIKE (PARENT_ID, MEMBER_ID, PARENT_TYPE, LIKE_TYPE)
-        VALUES
-            (#{parent_id}, #{member_id},#{parent_type},#{like_type})
-    </insert>
-
-    <select id="countLike" parameterType="int" resultType="LikeVo">
-        SELECT * FROM _LIKE WHERE PARENT_ID = #{board_id}
-    </select>
-
-    <select id="getOneLikeHistory" parameterType="HashMap" resultType="LikeVo">
-        SELECT * FROM _LIKE WHERE PARENT_ID = #{parent_id} AND MEMBER_ID = #{session_id}
-    </select>
-
-    <delete id="deleteLike" parameterType="HashMap">
-        DELETE FROM _LIKE WHERE PARENT_ID = #{parent_id} AND MEMBER_ID = #{session_id}
-    </delete>
-
-    <update id="updateLikeToDislike" parameterType="HashMap">
-        UPDATE _LIKE SET LIKE_TYPE= false WHERE PARENT_ID = #{parent_id} AND MEMBER_ID = #{session_id}
-    </update>
-
-    <update id="updateDislikeToLike" parameterType="HashMap">
-        UPDATE _LIKE SET LIKE_TYPE= true WHERE PARENT_ID = #{parent_id} AND MEMBER_ID = #{session_id}
-    </update>
 </mapper>

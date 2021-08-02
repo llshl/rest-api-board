@@ -1,31 +1,21 @@
 package com.example.restapiboard.service;
 
 import com.example.restapiboard.config.MemberInformation;
-import com.example.restapiboard.config.SecurityUtil;
-import com.example.restapiboard.dto.CommentDto;
 import com.example.restapiboard.dto.MemberDto;
-import com.example.restapiboard.exception.DuplicatedLoginxception;
-import com.example.restapiboard.repository.CommentMapper;
+import com.example.restapiboard.exception.MemberException.DuplicatedLoginxception;
 import com.example.restapiboard.repository.MemberMapper;
 import com.example.restapiboard.security.MemberDetailsImpl;
 import com.example.restapiboard.security.kakao.KakaoOAuth2;
 import com.example.restapiboard.security.kakao.KakaoUserInfo;
-import com.example.restapiboard.vo.CommentVo;
 import com.example.restapiboard.vo.MemberVo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor

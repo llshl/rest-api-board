@@ -4,7 +4,7 @@
 
 <mapper namespace="com.example.restapiboard.repository.CommentMapper">
     <select id="findAll" parameterType="int" resultType="CommentVo">
-        SELECT * FROM COMMENT WHERE BOARD_ID = #{board_id}
+        SELECT * FROM COMMENT WHERE BOARD_ID = #{boardId}
     </select>
 
     <insert id="save" parameterType="CommentVo" useGeneratedKeys="true" keyProperty="comment_id">

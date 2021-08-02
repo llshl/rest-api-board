@@ -5,6 +5,7 @@ import com.example.restapiboard.vo.CommentVo;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Optional;
 
 @Mapper
 public interface CommentMapper {
