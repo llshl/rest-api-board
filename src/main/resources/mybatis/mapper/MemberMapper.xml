@@ -4,7 +4,7 @@
 
 <mapper namespace="com.example.restapiboard.repository.MemberMapper">
 
-    <insert id="save" parameterType="MemberVo">
+    <insert id="save" parameterType="MemberVo" useGeneratedKeys="true" keyProperty="member_id">
         INSERT INTO
             MEMBER (LOGIN_ID, LOGIN_PASSWORD, EMAIL, NAME, NICKNAME, KAKAO_ID)
         VALUES
