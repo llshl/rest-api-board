@@ -11,7 +11,7 @@ import java.util.Map;
 
 public interface BoardService {
 
-    BoardVo createBoard(BoardDto boardDto, HttpServletRequest request);
+    BoardVo createBoard(BoardDto boardDto);
     List<BoardVo> findBoards(int displayPost, int postNum);
     void updateOne(BoardDto boardDto);
     BoardDto findOne(int id);

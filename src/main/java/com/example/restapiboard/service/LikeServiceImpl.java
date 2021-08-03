@@ -16,14 +16,14 @@ public class LikeServiceImpl implements LikeService{
     private final LikeMapper likeMapper;
 
     @Override
-    public void addLike(int id) {
+    public void addLike(int id, int member_id) {
         //id로 들어온 게시글번호를 통해 현재 게시물에 달린 좋아요들 목록을 가져오고 그 중에서 세션id를 통해 현재 사용자의 좋아요 내역을 조회
         //가져와졌다면 이미 눌린 상태라는 것이고 안가져와졌다면 처음 누르는 상태이므로 바로 반영하면됨
         //이미 눌린 상태였다면 좋아요가 눌렸었는지 싫어요가 눌렸었는지 확인 후 좋아요라면 토글을 통한 취소이니 _LIKE테이블에서 delete
         //싫어요라면 좋아요의 true를 false로 update
         HashMap<String, Integer> map = new HashMap<>();
         map.put("parent_id", id);   //현재 게시물에서
-        map.put("session_id",3);    //내가 쓴 댓글    //@@@@@@@@@@@@@@@@이거 3 대신 세션에서 id 가져와서 넣어주자 @@@@@@@@@@@@@@@@@@@
+        map.put("session_id",member_id);
         LikeVo oneLikeHistory = likeMapper.getOneLikeHistory(map);
         if(oneLikeHistory != null){
             //좋아요 내역이 있다면 이전에 누른적이 있다.
@@ -50,10 +50,10 @@ public class LikeServiceImpl implements LikeService{
     }
 
     @Override
-    public void addDislike(int id) {
+    public void addDislike(int id, int member_id) {
         HashMap<String, Integer> map = new HashMap<>();
         map.put("parent_id", id);   //현재 게시물에서
-        map.put("session_id",3);    //내가 쓴 댓글    //@@@@@@@@@@@@@@@@이거 3 대신 세션에서 id 가져와서 넣어주자 @@@@@@@@@@@@@@@@@@@
+        map.put("session_id",member_id);    //내가 쓴 댓글    //@@@@@@@@@@@@@@@@이거 3 대신 세션에서 id 가져와서 넣어주자 @@@@@@@@@@@@@@@@@@@
         LikeVo oneLikeHistory = likeMapper.getOneLikeHistory(map);
         if(oneLikeHistory != null){
             //싫어요 내역이 있다면 이전에 누른적이 있다.

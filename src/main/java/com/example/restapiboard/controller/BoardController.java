@@ -11,17 +11,12 @@ import org.springframework.context.MessageSource;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -34,7 +29,6 @@ public class BoardController {
 
     private final int POST_NUMBER_PER_PAGE = 10;
     private final BoardService boardService;
-    private final MessageSource messageSource;
     private WebMvcLinkBuilder getLinkAddress() {
         return linkTo(BoardController.class);
     }
@@ -46,7 +40,6 @@ public class BoardController {
         int count = boardService.countAllBoard();   //게시글 총 개수
         int displayPost = (page - 1) * POST_NUMBER_PER_PAGE;    //해당 페이지에 출력할 첫번째 게시글 인덱스
 
-        //Pagination pagination = new Pagination();
         BoardListDto boardListDto = Pagination.listPagination(page,count);  //게시글(boardVo)를 제외한 페이징 정보 갖고있다.
         boardListDto.setBoardVos(boardService.findBoards(displayPost,POST_NUMBER_PER_PAGE));     //boardVo 세팅
 
@@ -65,9 +58,9 @@ public class BoardController {
     //게시글 작성하기
     //https://sanghaklee.tistory.com/61
     @PostMapping("/list")
-    public ResponseEntity createBoard(@RequestBody BoardDto boardDto, HttpServletRequest request){
+    public ResponseEntity createBoard(@RequestBody BoardDto boardDto){
         log.info("게시글 작성하기");
-        BoardVo board = boardService.createBoard(boardDto, request);    //request빼기
+        BoardVo board = boardService.createBoard(boardDto);
         URI createdURI = getLinkAddress().slash(board.getBoard_id()).toUri();
         EntityModel<BoardVo> entityModel = EntityModel.of(board,
                 getLinkAddress().slash(board.getBoard_id()).withSelfRel(),

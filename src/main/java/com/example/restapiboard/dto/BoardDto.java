@@ -1,14 +1,13 @@
 package com.example.restapiboard.dto;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @Builder
+
 public class BoardDto {
 
     private int board_id;

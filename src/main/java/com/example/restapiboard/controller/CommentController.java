@@ -2,6 +2,7 @@ package com.example.restapiboard.controller;
 
 import com.example.restapiboard.dto.BoardDto;
 import com.example.restapiboard.dto.CommentDto;
+import com.example.restapiboard.security.MemberDetailsImpl;
 import com.example.restapiboard.service.CommentService;
 import com.example.restapiboard.vo.BoardVo;
 import com.example.restapiboard.vo.CommentVo;
@@ -11,6 +12,7 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -51,8 +53,10 @@ public class CommentController {
 
     //댓글 작성하기
     @PostMapping("/comment")
-    public ResponseEntity createComment(@RequestBody CommentDto commentDto){
+    public ResponseEntity createComment(@RequestBody CommentDto commentDto,
+                                        @AuthenticationPrincipal MemberDetailsImpl memberDetails){
         log.info(commentDto.getBoard_id()+"번 게시물에 댓글 작성하기");
+        commentDto.setMember_id(memberDetails.getMemberId());
         CommentVo comment = commentService.createComment(commentDto);
         URI createdURI = getLinkAddress().slash(comment.getComment_id()).toUri();
         EntityModel<CommentVo> entityModel = EntityModel.of(comment,

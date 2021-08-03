@@ -20,6 +20,10 @@ public class MemberDetailsImpl implements UserDetails {
         return memberVo;
     }
 
+    public int getMemberId() {
+        return memberVo.getMember_id();
+    }
+
     @Override
     public String getPassword() {
         return memberVo.getLogin_password();

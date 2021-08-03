@@ -1,19 +1,17 @@
 package com.example.restapiboard.service;
 
-import com.example.restapiboard.config.MemberInformation;
 import com.example.restapiboard.dto.BoardDto;
-import com.example.restapiboard.dto.LikeType;
-import com.example.restapiboard.dto.ParentType;
-import com.example.restapiboard.exception.BoardNotFoundException;
+import com.example.restapiboard.exception.BoardException.BoardNotFoundException;
 import com.example.restapiboard.repository.BoardMapper;
 import com.example.restapiboard.repository.LikeMapper;
 import com.example.restapiboard.vo.BoardVo;
 import com.example.restapiboard.vo.LikeVo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -26,15 +24,14 @@ public class BoardServiceImpl implements BoardService {
 
     private final BoardMapper boardMapper;
     private final LikeMapper likeMapper;
-    private final MemberInformation memberInformation;
 
     @Override
-    public BoardVo createBoard(BoardDto boardDto, HttpServletRequest request) {
+    public BoardVo createBoard(BoardDto boardDto) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         BoardVo boardVo = BoardVo.builder()
                 .title(boardDto.getTitle())
                 .content(boardDto.getContent())
-                //.author(userInformation.getUserName(request))
-                .author("tester")
+                .author(auth.getName())
                 .isUpdated(false)
                 .date(LocalDateTime.now())
                 .build();

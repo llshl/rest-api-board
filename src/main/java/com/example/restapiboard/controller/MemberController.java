@@ -43,7 +43,7 @@ public class MemberController {
     public ResponseEntity updateNickname(@PathVariable("newNickname") String newNickname,
                                                    @AuthenticationPrincipal MemberDetailsImpl memberDetails){
         log.info("닉네임 변경");
-        memberService.updateNickname(newNickname,memberDetails.getMemberVo().getMember_id());
+        memberService.updateNickname(newNickname,memberDetails.getMemberVo().getMember_id());   //이거도 서비스에서 id 넣어주자
         Map<String, String> resultMap = new HashMap<>();
         resultMap.put("updated Nickname", newNickname);
         EntityModel entityModel = EntityModel.of(resultMap,
