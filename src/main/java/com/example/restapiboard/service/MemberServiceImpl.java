@@ -1,8 +1,8 @@
 package com.example.restapiboard.service;
 
-import com.example.restapiboard.config.MemberInformation;
 import com.example.restapiboard.dto.MemberDto;
 import com.example.restapiboard.exception.MemberException.DuplicatedLoginxception;
+import com.example.restapiboard.exception.MemberException.MemberNotFoundException;
 import com.example.restapiboard.repository.MemberMapper;
 import com.example.restapiboard.security.MemberDetailsImpl;
 import com.example.restapiboard.security.kakao.KakaoOAuth2;
@@ -25,8 +25,6 @@ public class MemberServiceImpl implements MemberService{
     private final MemberMapper memberMapper;
     private final PasswordEncoder passwordEncoder;
     private final KakaoOAuth2 kakaoOAuth2;
-    private final AuthenticationManager authenticationManager;
-    private final MemberInformation memberInformation;
     private static final String ADMIN_TOKEN = "AAABnv/xRVklrnYxKZ0aHgTBcXukeZygoC";
 
     @Override
@@ -58,7 +56,8 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     public MemberVo findMember(String nickname) {
-        return memberMapper.findByNickname(nickname).orElse(null);
+        return memberMapper.findByNickname(nickname)
+                .orElseThrow(() -> new MemberNotFoundException(String.format("ID[%s] isn't exist", nickname)));
     }
 
     @Override
@@ -117,8 +116,9 @@ public class MemberServiceImpl implements MemberService{
                 //카카오 로그인 후 바로 사용자의 정보를 담은 MemberDetailsImpl의 객체가 생성되는데
                 //이때 데이터베이스상의 id는 가져와있지 않기때문에 추가적인 쿼리를 통해서 db상의 member_id를 가져와서
                 //memberDetails만들때 setter로 넣어줌
-                int idByLoginId = memberMapper.findIdByLoginId(email);
-                kakaoMember.setMember_id(idByLoginId);
+                //int idByLoginId = memberMapper.findIdByLoginId(email);
+                //System.out.println("바로 id가 가져와졌는지 확인: "+kakaoMember.getMember_id());
+                //kakaoMember.setMember_id(idByLoginId);
             }
         }
 

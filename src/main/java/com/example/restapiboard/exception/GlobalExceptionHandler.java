@@ -1,5 +1,6 @@
 package com.example.restapiboard.exception;
 
+import com.example.restapiboard.exception.BoardException.BoardNotFoundException;
 import com.example.restapiboard.exception.MemberException.DuplicatedLoginxception;
 import com.example.restapiboard.exception.MemberException.MemberNotFoundException;
 import org.springframework.http.HttpHeaders;
