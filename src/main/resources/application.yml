@@ -9,15 +9,15 @@ spring:
       mode: always
       schema-locations: classpath:schema.sql
       data-locations: classpath:data.sql
-  thymeleaf:
-    prefix : classpath:/static/
-    suffix : .html
-    cache: false
   devtools:
     livereload:
       enabled: true
   messages:
     basename: messages
+  mvc:
+    view:
+      prefix: /WEB-INF/views/
+      suffix: .jsp
 
 mybatis:
   type-aliases-package: com.example.restapiboard.vo
