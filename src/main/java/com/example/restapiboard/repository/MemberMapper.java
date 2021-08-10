@@ -22,4 +22,5 @@ public interface MemberMapper {
     Optional<MemberVo> findByLoginId(String login_id);
     Optional<MemberVo> findByKakaoId(Long kakaoId);
     Optional<MemberVo> findByEmail(String email);
+    String findNicknameById(int member_id);
 }

@@ -1,7 +1,10 @@
 package com.example.restapiboard.service;
 
 import com.example.restapiboard.dto.CommentDto;
+import com.example.restapiboard.repository.BoardMapper;
 import com.example.restapiboard.repository.CommentMapper;
+import com.example.restapiboard.repository.LikeMapper;
+import com.example.restapiboard.repository.MemberMapper;
 import com.example.restapiboard.vo.CommentVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,13 +16,15 @@ import java.util.List;
 public class CommentServiceImpl implements CommentService{
 
     private final CommentMapper commentMapper;
+    private final MemberMapper memberMapper;
+    private final LikeMapper likeMapper;
 
     @Override
     public CommentVo createComment(CommentDto commentDto) {
         CommentVo commentVo = CommentVo.builder()
                 .content(commentDto.getContent())
                 .board_id(commentDto.getBoard_id())
-                .member_id(commentDto.getMember_id())
+                .member_nickname(memberMapper.findNicknameById(commentDto.getMember_id()))
                 .date(LocalDateTime.now())
                 .isUpdated(false)
                 .build();

@@ -3,6 +3,7 @@ package com.example.restapiboard.controller;
 import com.example.restapiboard.config.Pagination;
 import com.example.restapiboard.dto.BoardDto;
 import com.example.restapiboard.dto.BoardListDto;
+import com.example.restapiboard.dto.request.CreateBoardRequest;
 import com.example.restapiboard.service.BoardService;
 import com.example.restapiboard.vo.BoardVo;
 import lombok.RequiredArgsConstructor;
@@ -43,7 +44,7 @@ public class BoardController {
         BoardListDto boardListDto = Pagination.listPagination(page,count);  //게시글(boardVo)를 제외한 페이징 정보 갖고있다.
         boardListDto.setBoardVos(boardService.findBoards(displayPost,POST_NUMBER_PER_PAGE));     //boardVo 세팅
 
-        List<EntityModel> collect = boardListDto.getBoardVos().stream()
+       /* List<EntityModel> collect = boardListDto.getBoardVos().stream()
                 .map(board -> EntityModel.of(board, getLinkAddress().slash(board.getBoard_id()).withRel("get")))
                 .collect(Collectors.toList());
 
@@ -52,15 +53,17 @@ public class BoardController {
                 getLinkAddress().slash("post").withRel("post"),
                 getLinkAddress().withSelfRel());
         return ResponseEntity
-                .ok(entityModel);
+                .ok(entityModel);*/
+        return ResponseEntity
+                .ok(boardListDto);
     }
 
     //게시글 작성하기
     //https://sanghaklee.tistory.com/61
     @PostMapping("/list")
-    public ResponseEntity createBoard(@RequestBody BoardDto boardDto){
+    public ResponseEntity createBoard(@RequestBody CreateBoardRequest createBoardRequest){
         log.info("게시글 작성하기");
-        BoardVo board = boardService.createBoard(boardDto);
+        BoardVo board = boardService.createBoard(createBoardRequest);
         URI createdURI = getLinkAddress().slash(board.getBoard_id()).toUri();
         EntityModel<BoardVo> entityModel = EntityModel.of(board,
                 getLinkAddress().slash(board.getBoard_id()).withSelfRel(),

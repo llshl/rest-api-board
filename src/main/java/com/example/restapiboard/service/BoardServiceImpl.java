@@ -1,6 +1,7 @@
 package com.example.restapiboard.service;
 
 import com.example.restapiboard.dto.BoardDto;
+import com.example.restapiboard.dto.request.CreateBoardRequest;
 import com.example.restapiboard.exception.BoardException.BoardNotFoundException;
 import com.example.restapiboard.repository.BoardMapper;
 import com.example.restapiboard.repository.LikeMapper;
@@ -26,11 +27,11 @@ public class BoardServiceImpl implements BoardService {
     private final LikeMapper likeMapper;
 
     @Override
-    public BoardVo createBoard(BoardDto boardDto) {
+    public BoardVo createBoard(CreateBoardRequest createBoardRequest) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         BoardVo boardVo = BoardVo.builder()
-                .title(boardDto.getTitle())
-                .content(boardDto.getContent())
+                .title(createBoardRequest.getTitle())
+                .content(createBoardRequest.getContent())
                 .author(auth.getName())
                 .isUpdated(false)
                 .date(LocalDateTime.now())

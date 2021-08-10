@@ -20,6 +20,12 @@ public class BoardListDto {
     private int startPageNum;
     private int endPageNum;
 
+    //게시글 총 개수(프론트에서 글 번호를 매기기 위함)
+    private int count;
+
+    //현재 페이지 번호
+    private int currentPageNum;
+
     //페이지 하단에 이전버튼과 다음버튼 여부
     private boolean prev;
     private boolean next;

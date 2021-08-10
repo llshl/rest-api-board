@@ -1,6 +1,7 @@
 package com.example.restapiboard.service;
 
 import com.example.restapiboard.dto.BoardDto;
+import com.example.restapiboard.dto.request.CreateBoardRequest;
 import com.example.restapiboard.vo.BoardVo;
 import com.example.restapiboard.vo.LikeVo;
 
@@ -11,7 +12,7 @@ import java.util.Map;
 
 public interface BoardService {
 
-    BoardVo createBoard(BoardDto boardDto);
+    BoardVo createBoard(CreateBoardRequest createBoardRequest);
     List<BoardVo> findBoards(int displayPost, int postNum);
     void updateOne(BoardDto boardDto);
     BoardDto findOne(int id);

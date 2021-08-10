@@ -36,6 +36,8 @@ public class Pagination {
         return BoardListDto.builder()
                 .startPageNum(startPageNum)
                 .endPageNum(endPageNum)
+                .count(count)
+                .currentPageNum(currentPageNum)
                 .prev(prev)
                 .next(next)
                 .build();

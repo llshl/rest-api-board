@@ -40,7 +40,6 @@ public class LikeServiceImpl implements LikeService{
         }
         //좋아요 싫어요를 처음 누르는 것이면 여기
         LikeVo likeVo = LikeVo.builder()
-                .parent_type(true)  //true면 게시글
                 .like_type(true)    //true면 좋아요
                 .parent_id(id)
                 .member_id(3)   //세션에서 사용자 id 넣어주자
@@ -69,7 +68,6 @@ public class LikeServiceImpl implements LikeService{
             }
         }
         LikeVo likeVo = LikeVo.builder()
-                .parent_type(true)
                 .like_type(false)
                 .parent_id(id)
                 .member_id(3)   //세션에서 사용자 id 넣어주자

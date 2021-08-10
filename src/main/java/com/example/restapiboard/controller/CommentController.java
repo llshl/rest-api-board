@@ -40,15 +40,21 @@ public class CommentController {
     public ResponseEntity showAllComments(@PathVariable("id") int boardId){
         log.info(boardId+"번 게시글의 댓글 불러오기");
         List<CommentVo> comments = commentService.findComments(boardId);
-        List<EntityModel> collect = comments.stream()
-                .map(commnet -> EntityModel.of(commnet,
-                        getLinkAddress().slash(commnet.getComment_id()).withRel("update"),
-                        getLinkAddress().slash(commnet.getComment_id()).withRel("delete")))
-                .collect(Collectors.toList());
-        CollectionModel entityModel = CollectionModel.of(collect,
-                getLinkAddress().withSelfRel());
+        System.out.println("잘나옴?");
+        for(CommentVo v : comments){
+            System.out.println(v.getMember_nickname());
+        }
+//        List<EntityModel> collect = comments.stream()
+//                .map(commnet -> EntityModel.of(commnet,
+//                        getLinkAddress().slash(commnet.getComment_id()).withRel("update"),
+//                        getLinkAddress().slash(commnet.getComment_id()).withRel("delete")))
+//                .collect(Collectors.toList());
+//        CollectionModel entityModel = CollectionModel.of(collect,
+//                getLinkAddress().withSelfRel());
+//        return ResponseEntity
+//                .ok(entityModel);
         return ResponseEntity
-                .ok(entityModel);
+                .ok(comments);
     }
 
     //댓글 작성하기

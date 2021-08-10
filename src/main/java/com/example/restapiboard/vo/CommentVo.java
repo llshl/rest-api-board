@@ -5,6 +5,7 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,10 +16,8 @@ public class CommentVo {
     private int comment_id;
     private int board_id;
     private int member_id;
+    private String member_nickname;
     private String content;
-
-    private int like_count;
-    private int dislike_count;
 
     private LocalDateTime date;
 
