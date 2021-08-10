@@ -20,7 +20,6 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-hateoas'
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.0'
 	compileOnly 'org.projectlombok:lombok'
@@ -31,8 +30,6 @@ dependencies {
 
 	//스프링 시큐리티
 	implementation 'org.springframework.boot:spring-boot-starter-security'
-	//Thymeleaf
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
@@ -43,6 +40,12 @@ dependencies {
 
 	// https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core
 	implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.12.4'
+
+	// https://mvnrepository.com/artifact/javax.servlet.jsp/javax.servlet.jsp-api
+	compileOnly group: 'javax.servlet.jsp', name: 'javax.servlet.jsp-api', version: '2.3.1'
+
+	implementation('javax.servlet:jstl')
+	implementation("org.apache.tomcat.embed:tomcat-embed-jasper")
 }
 
 test {
