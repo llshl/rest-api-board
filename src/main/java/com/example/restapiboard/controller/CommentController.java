@@ -2,6 +2,7 @@ package com.example.restapiboard.controller;
 
 import com.example.restapiboard.dto.BoardDto;
 import com.example.restapiboard.dto.CommentDto;
+import com.example.restapiboard.dto.request.CreateCommentRequest;
 import com.example.restapiboard.security.MemberDetailsImpl;
 import com.example.restapiboard.service.CommentService;
 import com.example.restapiboard.vo.BoardVo;
@@ -59,11 +60,11 @@ public class CommentController {
 
     //댓글 작성하기
     @PostMapping("/comment")
-    public ResponseEntity createComment(@RequestBody CommentDto commentDto,
+    public ResponseEntity createComment(@RequestBody CreateCommentRequest createCommentRequest,
                                         @AuthenticationPrincipal MemberDetailsImpl memberDetails){
-        log.info(commentDto.getBoard_id()+"번 게시물에 댓글 작성하기");
-        commentDto.setMember_id(memberDetails.getMemberId());
-        CommentVo comment = commentService.createComment(commentDto);
+        log.info(createCommentRequest.getBoard_id()+"번 게시물에 댓글 작성하기");
+        createCommentRequest.setMember_id(memberDetails.getMemberId());
+        CommentVo comment = commentService.createComment(createCommentRequest);
         URI createdURI = getLinkAddress().slash(comment.getComment_id()).toUri();
         EntityModel<CommentVo> entityModel = EntityModel.of(comment,
                 getLinkAddress().slash(comment.getComment_id()).withSelfRel(),

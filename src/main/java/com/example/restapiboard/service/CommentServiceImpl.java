@@ -1,6 +1,7 @@
 package com.example.restapiboard.service;
 
 import com.example.restapiboard.dto.CommentDto;
+import com.example.restapiboard.dto.request.CreateCommentRequest;
 import com.example.restapiboard.repository.BoardMapper;
 import com.example.restapiboard.repository.CommentMapper;
 import com.example.restapiboard.repository.LikeMapper;
@@ -20,11 +21,12 @@ public class CommentServiceImpl implements CommentService{
     private final LikeMapper likeMapper;
 
     @Override
-    public CommentVo createComment(CommentDto commentDto) {
+    public CommentVo createComment(CreateCommentRequest createCommentRequest) {
         CommentVo commentVo = CommentVo.builder()
-                .content(commentDto.getContent())
-                .board_id(commentDto.getBoard_id())
-                .member_nickname(memberMapper.findNicknameById(commentDto.getMember_id()))
+                .content(createCommentRequest.getContent())
+                .board_id(createCommentRequest.getBoard_id())
+                .member_id(createCommentRequest.getMember_id())
+                .member_nickname(memberMapper.findNicknameById(createCommentRequest.getMember_id()))
                 .date(LocalDateTime.now())
                 .isUpdated(false)
                 .build();
