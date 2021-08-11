@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" isELIgnored="false"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -19,6 +20,37 @@
         <link href="../css/styles.css" rel="stylesheet" />
         <!--제이쿼리-->
         <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+        <script>
+            function like_button() {
+                $.ajax({
+                    type: "POST",
+                    url: "/like/"+board_id,
+                    success: function (response) {
+                        window.location.reload();
+                    }
+                })
+            }
+
+            function dislike_button() {
+                $.ajax({
+                    type: "POST",
+                    url: "/dislike/"+board_id,
+                    success: function (response) {
+                        window.location.reload();
+                    }
+                })
+            }
+
+            function delete_comment(comment_id) {
+                $.ajax({
+                    type: "DELETE",
+                    url: "/comment/"+comment_id,
+                    success: function (response) {
+                        window.location.reload();
+                    }
+                })
+            }
+        </script>
     </head>
     <body id="page-top">
         <!-- Navigation-->
@@ -38,6 +70,7 @@
                         <div class="p-5">
                             <div class="text-center">
                                 <h1 class="h4 text-gray-900 mb-4" id="title"></h1>
+                                <div id="isupdated"></div>
                                 <div align="left">
                                     <div style="white-space : pre-wrap;height: 100%" id="author">글쓴이: </div>
                                     <div style="white-space : pre-wrap;height: 100%" id="date">작성일: </div>
@@ -45,30 +78,42 @@
                                     <div style="white-space : pre-wrap;height: 100%" id="dislike_count">싫어요: </div>
                                 </div>
                             </div>
-
+                            <button type="button" onclick="like_button();" class="btn btn-primary">좋아요</button>
+                            <button type="button" onclick="dislike_button()" class="btn btn-secondary">싫어요</button>
+                            <div>
+                                <div id="update_delete_button"></div>
+                            </div>
                             <form class="user" >
                                 <br>
-                                    <div class="form-group">
+                                    <div class="form-group" >
                                         <li class="list-group-item">
                                             <div >
-                                                <div id="content" style="white-space : pre-wrap;height: 100%"></div>
+                                                <div id="content" style="white-space : pre-wrap; margin-bottom: 150px"></div>
                                             </div>
                                         </li>
                                     </div>
                             </form>
-
 
                             <div class="ui middle aligned center aligned grid">
                                 <table class="ui celled table">
                                     <thead>
                                     <tr>
                                         <th width="80"></th>
-                                        <th width="250"></th>
+                                        <th width="150"></th>
                                         <th width="100"></th>
-                                        <th width="50"></th>
+                                        <th width="30"></th>
+                                        <th width="30"></th>
                                     </tr>
                                     </thead>
                                     <br>
+                                    <hr>
+                                    <form class="user">
+                                        <div class="form-group">
+                                            <textarea class="form-control" style="resize: vertical;" id="comment_input" placeholder="댓글을 입력하세요" rows="3"></textarea>
+                                            <p class="help-block text-danger"></p>
+                                        </div>
+                                        <div class="btn btn-primary btn-user btn-block" id = "submitBoard">댓글달기</div>
+                                    </form>
                                     <tbody id="comment">
                                     </tbody>
                                 </table>
@@ -84,8 +129,28 @@
                 </div>
             </div>
         </div>
-
+        <sec:authentication property="principal.memberVo.member_id"/>
+        <sec:authentication property="principal.memberVo.nickname"/>
         <script>
+
+            function regExp(str){
+                var reg = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi
+                //특수문자 검증
+                if(reg.test(str)){
+                    //특수문자 제거후 리턴
+                    return str.replace(reg, "");
+                } else {
+                    //특수문자가 없으므로 본래 문자 리턴
+                    return str;
+                }
+            }
+
+            //현재 사용자의 nickname과 게시글 author를 비교해서 같으면 수정/삭제버튼 보이게 하려하는데 이게 왜 안나올까
+            //let current_user_nickname = "<sec:authentication property="principal.memberVo.nickname"/>";
+            //console.log(current_user_nickname);
+            let current_user_id = <sec:authentication property="principal.memberVo.member_id"/>;
+
+            let board_id = "${id}";
             $(document).ready(function() {
                 var id = "${id}";
                 console.log(id+"번 게시글 불러오기");
@@ -110,8 +175,20 @@
                         $("#like_count").append(like_count);
                         $("#dislike_count").append(dislike_count);
                         $("#content").append(content);
+                        if(updated){
+                            $("#isupdated").append("(수정됨)");
+                        }
+                        /*if(current_user_nickname == author){
+                            $("#update_delete_button").append(
+                                "<tr>"+
+                                "<td><button type='button' class='btn btn-info'>"+'수정하기'+"</button></td>"+
+                                "<td><button type='button' class='btn btn-danger'>"+'삭제하기'+"</button></td>"+
+                                "</tr>"
+                            );
+                        }*/
                     }
                 });
+
 
                 $.ajax({
                     type: "get",
@@ -121,20 +198,33 @@
                         console.log(data);
                         let comments = data;
                         for (let i = 0; i < comments.length; i++) {
+                            let comment_id = comments[i]['comment_id'];
                             let member_nickname = comments[i]['member_nickname'];
+                            let member_id = comments[i]['member_id'];
                             let content = comments[i]['content'];
                             let date = comments[i]['date'];
                             let updated = comments[i]['updated'];
-                            console.log(member_nickname);
-                            console.log(content);
-                            console.log(date);
-                            $("#comment").append(
-                                "<tr>"+
-                                "<td>"+member_nickname+"</td>"+
-                                "<td>"+content+"</td>"+
-                                "<td>"+FormatToUnixtime(date)+"</td>"+
-                                "</tr>"
-                            );
+                            console.log(member_id);
+                            if(member_id == current_user_id){
+                                $("#comment").append(
+                                    "<tr>"+
+                                    "<td>"+member_nickname+"</td>"+
+                                    "<td>"+content+"</td>"+
+                                    "<td>"+FormatToUnixtime(date)+"</td>"+
+                                    "<td><button type='button' class='btn btn-info'>"+'수정하기'+"</button></td>"+
+                                    "<td><button type='button' onclick="+"delete_comment("+comment_id+"); class='btn btn-danger'>"+'삭제하기'+"</button></td>"+
+                                    "</tr>"
+                                );
+                            }
+                            else {
+                                $("#comment").append(
+                                    "<tr>" +
+                                    "<td>" + member_nickname + "</td>" +
+                                    "<td>" + content + "</td>" +
+                                    "<td>" + FormatToUnixtime(date) + "</td>" +
+                                    "</tr>"
+                                );
+                            }
                         }
                     }
                 });
@@ -148,6 +238,40 @@
                         ' ' + ('0' + u.getHours()).slice(-2) +
                         ':' + ('0' + u.getMinutes()).slice(-2)
                 };
+            });
+        </script>
+        <script>
+            let current_board_id = "${id}";
+            $(document).ready(function(){
+                $("#submitBoard").click(function(){
+                    var json = {
+                        board_id : current_board_id,
+                        content : $("#comment_input").val()
+                    };
+
+                    for(var str in json){
+                        if(json[str].length == 0){
+                            alert($("#" + str).attr("placeholder") + "를 입력해주세요.");
+                            $("#" + str).focus();
+                            return;
+                        }
+                    }
+
+                    $.ajax({
+                        type : "POST",
+                        url : "/comment",
+                        data : JSON.stringify(json),
+                        contentType: 'application/json',
+                        success : function(data) {
+                            console.log(data);
+                            //alert('등록되었습니다.');
+                            window.location.reload();
+                        },
+                        error: function (error) {
+                            alert("오류 발생" + error);
+                        }
+                    });
+                });
             });
         </script>
 
