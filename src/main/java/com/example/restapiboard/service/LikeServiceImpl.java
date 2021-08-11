@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -25,6 +26,7 @@ public class LikeServiceImpl implements LikeService{
         map.put("parent_id", id);   //현재 게시물에서
         map.put("session_id",member_id);
         LikeVo oneLikeHistory = likeMapper.getOneLikeHistory(map);
+        //oneLikeHistory는 1개이거나 null일수 밖에 없다. 1개라면 좋아요 혹은 싫어요
         if(oneLikeHistory != null){
             //좋아요 내역이 있다면 이전에 누른적이 있다.
             if(oneLikeHistory.isLike_type()){
@@ -42,7 +44,7 @@ public class LikeServiceImpl implements LikeService{
         LikeVo likeVo = LikeVo.builder()
                 .like_type(true)    //true면 좋아요
                 .parent_id(id)
-                .member_id(3)   //세션에서 사용자 id 넣어주자
+                .member_id(member_id)   //세션에서 사용자 id 넣어주자
                 .build();
         likeMapper.pressLike(likeVo);
         return;
@@ -70,7 +72,7 @@ public class LikeServiceImpl implements LikeService{
         LikeVo likeVo = LikeVo.builder()
                 .like_type(false)
                 .parent_id(id)
-                .member_id(3)   //세션에서 사용자 id 넣어주자
+                .member_id(member_id)   //세션에서 사용자 id 넣어주자
                 .build();
         likeMapper.pressLike(likeVo);
     }

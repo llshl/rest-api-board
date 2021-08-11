@@ -32,6 +32,7 @@ public class LikeController {
     public ResponseEntity pressLike(@PathVariable("id") int id,
                                     @AuthenticationPrincipal MemberDetailsImpl memberDetails){  //게시글번호가 들어온다
         log.info(id+"번 게시물 좋아요 처리");
+        System.out.println("현재 사용자 id: "+memberDetails.getMemberId());
         likeService.addLike(id,memberDetails.getMemberId());
         Map<String, Integer> resultMap = new HashMap<>();
         resultMap.put("likedId", id);
