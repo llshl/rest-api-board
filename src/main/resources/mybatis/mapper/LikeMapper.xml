@@ -6,9 +6,9 @@
 
     <insert id="pressLike" parameterType="LikeVo">
         INSERT INTO
-            _LIKE (PARENT_ID, MEMBER_ID, PARENT_TYPE, LIKE_TYPE)
+            _LIKE (PARENT_ID, MEMBER_ID,  LIKE_TYPE)
         VALUES
-            (#{parent_id}, #{member_id},#{parent_type},#{like_type})
+            (#{parent_id}, #{member_id},#{like_type})
     </insert>
 
     <select id="countLike" parameterType="int" resultType="LikeVo">
