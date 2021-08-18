@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 @RequiredArgsConstructor
@@ -36,7 +37,7 @@ public class SignupController {
 
     // 회원 가입 요청 처리
     @PostMapping("/user/signup")
-    public String registerUser(MemberDto memberDto) {
+    public String registerUser(@RequestBody MemberDto memberDto) {
         log.info("회원가입 요청 처리");
         memberService.joinMember(memberDto);
         return "redirect:/";

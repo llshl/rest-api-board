@@ -29,7 +29,8 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     public MemberVo joinMember(MemberDto memberDto) {
-
+        System.out.println("memberDto.getLogin_id() = " + memberDto.getLogin_id());
+        System.out.println("memberDto.getLogin_password() = " + memberDto.getLogin_password());
         MemberVo findMemberWhoIsSameId = memberMapper.findByLoginId(memberDto.getLogin_id())
                 .orElse(null);
         //회원가입 아이디 중복 확인
@@ -41,7 +42,7 @@ public class MemberServiceImpl implements MemberService{
 
         //spring security encrypt
         String encryptedPassword = passwordEncoder.encode(memberDto.getLogin_password());
-
+        log.info("인코딩된 패스워드: "+encryptedPassword);
         MemberVo memberVo = MemberVo.builder()
                 .login_id(memberDto.getLogin_id())
                 .login_password(encryptedPassword)
@@ -76,8 +77,8 @@ public class MemberServiceImpl implements MemberService{
 
     public void kakaoLogin(String authorizedCode) {
         log.info("kakaoLogin Service 호출");
-        // 카카오 OAuth2 를 통해 카카오 사용자 정보 조회
         KakaoUserInfo userInfo = kakaoOAuth2.getUserInfo(authorizedCode);
+
         System.out.println("userInfo.getNickname() = " + userInfo.getNickname());
 
         //카카오에서 받아온 사용자의 정보

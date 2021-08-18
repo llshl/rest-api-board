@@ -11,12 +11,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
     <link href="/css/styles.css" rel="stylesheet" />
     <meta charset="UTF-8">
-    <title>로그인 페이지2</title>
+    <title>로그인 페이지</title>
 </head>
 <body>
 <div id="login-form">
-    <div id="login-title" align="center">KPU inside</div>
-    <!--여기에 카카오 api의 REST API키를 넣어줌, client_id=[여기에넣음]-->
+    <div id="login-title" >
+        <div align="center">REST Board</div>
+    </div>
     <button id="login-kakao-btn" onclick="location.href='https://kauth.kakao.com/oauth/authorize?client_id=adaa819f986ba4a7936765612d3a3caf&redirect_uri=http://localhost:8080/user/kakao/callback&response_type=code'">
         카카오로 로그인하기
     </button>
