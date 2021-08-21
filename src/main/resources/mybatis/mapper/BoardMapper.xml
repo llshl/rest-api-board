@@ -29,7 +29,7 @@
     <update id="update" parameterType="BoardVo">
         UPDATE BOARD
         SET
-            ISUPDATED = #{isUpdated}
+            ISUPDATED = #{isUpdated},
             <if test="title != null">
                 TITLE = #{title}
             </if>,

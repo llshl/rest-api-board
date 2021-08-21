@@ -2,6 +2,7 @@ package com.example.restapiboard.repository;
 
 import com.example.restapiboard.dto.BoardDto;
 import com.example.restapiboard.vo.BoardVo;
+import com.example.restapiboard.vo.BoardVo2;
 import com.example.restapiboard.vo.LikeVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Result;

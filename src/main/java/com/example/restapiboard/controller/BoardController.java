@@ -4,6 +4,8 @@ import com.example.restapiboard.config.Pagination;
 import com.example.restapiboard.dto.BoardDto;
 import com.example.restapiboard.dto.BoardListDto;
 import com.example.restapiboard.dto.request.CreateBoardRequest;
+import com.example.restapiboard.dto.request.UpdateBoardRequest;
+import com.example.restapiboard.security.MemberDetailsImpl;
 import com.example.restapiboard.service.BoardService;
 import com.example.restapiboard.vo.BoardVo;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +15,7 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -77,9 +80,11 @@ public class BoardController {
     //게시글 1개 내용보기
     //게시글 1개 반환이지만 BoardListDto로 해도 될것같다?
     @GetMapping("/list/{id}")
-    public ResponseEntity detailBoard(@PathVariable("id") int id) {
+    public ResponseEntity detailBoard(@PathVariable("id") int id,
+                                      @AuthenticationPrincipal MemberDetailsImpl memberDetails) {
         log.info(id+"번 게시글 조회");
         BoardDto boardDto = boardService.findOne(id);
+        boardDto.setAuthor_nickname(memberDetails.getMemberVo().getNickname());
         EntityModel entityModel = EntityModel.of(boardDto,
                 getLinkAddress().slash(boardDto.getBoard_id()).withSelfRel(),
                 getLinkAddress().slash(boardDto.getBoard_id()).withRel("update"),
@@ -91,10 +96,10 @@ public class BoardController {
 
     //게시글 수정
     @PutMapping("/list/{id}")
-    public ResponseEntity updateBoard(@RequestBody BoardDto boardDto, @PathVariable("id") int id) {
+    public ResponseEntity updateBoard(@RequestBody UpdateBoardRequest updateBoardRequest, @PathVariable("id") int id) {
         log.info(id+"번 게시글 수정");
-        boardDto.setBoard_id(id);
-        boardService.updateOne(boardDto);
+        updateBoardRequest.setBoard_id(id);
+        boardService.updateOne(updateBoardRequest);
         Map<String, Integer> resultMap = new HashMap<>();
         resultMap.put("updatedId", id);
         EntityModel entityModel = EntityModel.of(resultMap,

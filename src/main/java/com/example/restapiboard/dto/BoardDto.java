@@ -18,6 +18,7 @@ public class BoardDto {
     private String title;
     private String content;
     private String author;
+    private String author_nickname;
 
     private int like_count;
     private int dislike_count;
