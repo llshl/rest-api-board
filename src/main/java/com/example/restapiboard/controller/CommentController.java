@@ -81,7 +81,7 @@ public class CommentController {
     public ResponseEntity updateCommnet(@RequestBody CommentDto commentDto, @PathVariable("id") int id) {
         log.info(id+"번 게시글 수정");
         commentDto.setComment_id(id);
-       commentService.updateComment(commentDto);
+        commentService.updateComment(commentDto);
         EntityModel entityModel = EntityModel.of(id,
                 getLinkAddress().slash(id).withSelfRel());
         return ResponseEntity

@@ -2,10 +2,12 @@ package com.example.restapiboard.service;
 
 import com.example.restapiboard.dto.BoardDto;
 import com.example.restapiboard.dto.request.CreateBoardRequest;
+import com.example.restapiboard.dto.request.UpdateBoardRequest;
 import com.example.restapiboard.exception.BoardException.BoardNotFoundException;
 import com.example.restapiboard.repository.BoardMapper;
 import com.example.restapiboard.repository.LikeMapper;
 import com.example.restapiboard.vo.BoardVo;
+import com.example.restapiboard.vo.BoardVo2;
 import com.example.restapiboard.vo.LikeVo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -49,11 +51,11 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public void updateOne(BoardDto boardDto) {
+    public void updateOne(UpdateBoardRequest updateBoardRequest) {
         BoardVo boardVo = BoardVo.builder()
-                .board_id(boardDto.getBoard_id())
-                .title(boardDto.getTitle())
-                .content(boardDto.getContent())
+                .board_id(updateBoardRequest.getBoard_id())
+                .title(updateBoardRequest.getTitle())
+                .content(updateBoardRequest.getContent())
                 .isUpdated(true)
                 .build();
         boardMapper.update(boardVo);
@@ -62,6 +64,7 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public BoardDto findOne(int id) {
         //게시물 테이블 조회 후 게시글id를 통해서 해당 게시글의 좋아요 싫어요 개수까지 dto로 합쳐서 반환
+        //BoardVo2 boardVo = boardMapper.findOneByJoin(id)
         BoardVo boardVo = boardMapper.findOne(id)
                 .orElseThrow(() -> new BoardNotFoundException(String.format("ID[%d] isn't exist", id)));
         List<LikeVo> likeVos = likeMapper.countLike(id);   //어자피 좋아요와 싫어요 개수를 둘 다 알아야해서 정수로 받은것이 아닌 Vo로 한번에 받음
