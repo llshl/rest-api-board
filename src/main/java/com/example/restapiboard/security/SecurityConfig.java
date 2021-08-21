@@ -23,7 +23,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
         http.headers().frameOptions().disable();
-/*
+
         http.authorizeRequests()
                 .antMatchers("/images/**").permitAll()          //image 폴더를 login 없이 허용
                 .antMatchers("/css/**").permitAll()             //css 폴더를 login 없이 허용

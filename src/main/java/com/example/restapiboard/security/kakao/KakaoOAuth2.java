@@ -53,7 +53,9 @@ public class KakaoOAuth2 {
         String tokenJson = response.getBody();
         JSONObject rjson = new JSONObject(tokenJson);
         String accessToken = rjson.getString("access_token");   //우리가 필요한건 accessToken
-
+        String refreshToken = rjson.getString("refresh_token");   //우리가 필요한건 accessToken
+        System.out.println("accessToken = " + accessToken);
+        System.out.println("refreshToken = " + refreshToken);
         return accessToken;
     }
 
