@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" isELIgnored="false"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -7,7 +8,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Fabinet 자유게시판123</title>
+        <title>자유게시판</title>
         <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" /><div class="ui middle aligned center aligned grid"></div>
         <!-- Font Awesome icons (free version)-->
         <script src="https://use.fontawesome.com/releases/v5.15.1/js/all.js" crossorigin="anonymous"></script>
@@ -26,6 +27,11 @@
         </style>
     </head>
     <body id="page-top">
+    <div align="center">
+        <h1>어서오세요
+        <sec:authentication property="principal.memberVo.nickname"/>
+            님</h1>
+    </div>
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
             <div class="container">
@@ -55,7 +61,7 @@
                         <table class="ui celled table">
                             <thead>
                                 <tr>
-                                    <th width="120">번호</th>
+                                    <%--<th width="120">번호</th>--%>
                                     <th width="150">제목</th>
                                     <th width="50">작성자</th>
                                     <th width="50">등록일</th>
@@ -69,32 +75,35 @@
                     <div class="ui middle aligned center aligned grid" style="text-align: right">
                         <a href="/board/createBoard"><button class="btn btn-primary btn-xl text-uppercase js-scroll-trigger">게시글 작성하기</button></a>
                     </div>
+                    <br>
+                    <div class="ui middle aligned center aligned grid" style="text-align: right">
+                        <a href="/user/logout"><button class="btn btn-primary btn-xl text-uppercase js-scroll-trigger">로그아웃</button></a>
+                    </div>
                     <div class="ui error message"></div>
     
                 </div>
             </div>
         </div>
 
-        <%--모달--%>
-        <div class="portfolio-modal modal fade" id='view_modal'>
-            <i class="close-modal">x</i>
-            <div class="header" id="b_title">
-
-            </div>
-            <div class="row justify-content-center">
-                <div class="col-lg-8">
-                    <div class="modal-body">
-                        <p style = "text-align: right" id = "b_review"></p>
-                        <div id = 'b_content'></div>
-                    </div>
-                </div>
-            </div>
-            <div class="actions">
-                <div class="btn btn-primary" data-dismiss="modal">
-                    닫기
-                </div>
-            </div>
-        </div>
+    <nav><%--이거 처리하자--%>
+        <ul class="pagination">
+            <li>
+                <a href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li><a href="#">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">5</a></li>
+            <li>
+                <a href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
 
         
         <!-- Footer-->
@@ -132,7 +141,7 @@
                             let date = boards[i]['date'];
                             $("#list").append(
                                 "<tr>"+
-                                "<td>"+board_id+"</td>"+
+                                // "<td>"+board_id+"</td>"+
                                 "<td><a href='/board/"+board_id+"'>"+ title+"</a></td>"+
                                 "<td>"+author+"</td>"+
                                 "<td>"+FormatToUnixtime(date)+"</td>"+

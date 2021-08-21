@@ -41,12 +41,36 @@
                 })
             }
 
+            function update_comment(comment_id) {
+                $.ajax({
+                    type: "PUT",
+                    url: "/comment/"+comment_id,
+                    success: function (response) {
+                        window.location.reload();
+                    }
+                })
+            }
+
             function delete_comment(comment_id) {
                 $.ajax({
                     type: "DELETE",
                     url: "/comment/"+comment_id,
                     success: function (response) {
                         window.location.reload();
+                    }
+                })
+            }
+
+            function update_board(board_id) {
+                location.href = "/update/"+board_id;
+            }
+
+            function delete_board(board_id) {
+                $.ajax({
+                    type: "DELETE",
+                    url: "/list/"+board_id,
+                    success: function (response) {
+                        location.href = "/";
                     }
                 })
             }
@@ -81,7 +105,7 @@
                             <button type="button" onclick="like_button();" class="btn btn-primary">좋아요</button>
                             <button type="button" onclick="dislike_button()" class="btn btn-secondary">싫어요</button>
                             <div>
-                                <div id="update_delete_button"></div>
+                                <div style="margin-top: 10px" id="update_button"/>
                             </div>
                             <form class="user" >
                                 <br>
@@ -118,38 +142,12 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <%--<div class="form-group">
-                                <li class="list-group-item">
-                                    <div>
-                                        <div id="comment" style="white-space : pre-wrap;height: 100%"></div>
-                                    </div>
-                                </li>
-                            </div>--%>
                     </div>
                 </div>
             </div>
         </div>
-        <sec:authentication property="principal.memberVo.member_id"/>
-        <sec:authentication property="principal.memberVo.nickname"/>
         <script>
-
-            function regExp(str){
-                var reg = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi
-                //특수문자 검증
-                if(reg.test(str)){
-                    //특수문자 제거후 리턴
-                    return str.replace(reg, "");
-                } else {
-                    //특수문자가 없으므로 본래 문자 리턴
-                    return str;
-                }
-            }
-
-            //현재 사용자의 nickname과 게시글 author를 비교해서 같으면 수정/삭제버튼 보이게 하려하는데 이게 왜 안나올까
-            //let current_user_nickname = "<sec:authentication property="principal.memberVo.nickname"/>";
-            //console.log(current_user_nickname);
             let current_user_id = <sec:authentication property="principal.memberVo.member_id"/>;
-
             let board_id = "${id}";
             $(document).ready(function() {
                 var id = "${id}";
@@ -162,6 +160,7 @@
                         console.log(data);
                         let board = data;
                         let board_id = board['board_id'];
+                        let author_nickname = board['author_nickname'];
                         let title = board['title'];
                         let content = board['content'];
                         let author = board['author'];
@@ -178,14 +177,17 @@
                         if(updated){
                             $("#isupdated").append("(수정됨)");
                         }
-                        /*if(current_user_nickname == author){
-                            $("#update_delete_button").append(
+                        console.log("if문 시작");
+                        console.log(author);
+                        if(author == author_nickname){
+                            console.log("if문 들어옴");
+                            $("#update_button").append(
                                 "<tr>"+
-                                "<td><button type='button' class='btn btn-info'>"+'수정하기'+"</button></td>"+
-                                "<td><button type='button' class='btn btn-danger'>"+'삭제하기'+"</button></td>"+
+                                "<td><button type='button' onclick="+"update_board("+board_id+"); class='btn btn-info'>"+'수정하기'+"</button></td>"+
+                                "<td><button type='button' onclick="+"delete_board("+board_id+"); class='btn btn-danger'>"+'삭제하기'+"</button></td>"+
                                 "</tr>"
                             );
-                        }*/
+                        }
                     }
                 });
 
@@ -211,7 +213,7 @@
                                     "<td>"+member_nickname+"</td>"+
                                     "<td>"+content+"</td>"+
                                     "<td>"+FormatToUnixtime(date)+"</td>"+
-                                    "<td><button type='button' class='btn btn-info'>"+'수정하기'+"</button></td>"+
+                                    "<td><button type='button' onclick="+"update_comment("+comment_id+"); class='btn btn-info'>"+'수정하기'+"</button></td>"+
                                     "<td><button type='button' onclick="+"delete_comment("+comment_id+"); class='btn btn-danger'>"+'삭제하기'+"</button></td>"+
                                     "</tr>"
                                 );
