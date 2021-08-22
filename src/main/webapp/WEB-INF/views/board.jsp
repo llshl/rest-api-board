@@ -41,15 +41,8 @@
                     <i class="fas fa-bars ml-1"></i>
                 </button>
             </div>
-        </nav><%--
-        <!-- Masthead-->
-        <header class="masthead">
-            <div class="container">
-                <!-- <div class="masthead-subheading">Fabinet 게시판</div> -->
-                <div class="masthead-heading text-uppercase">Fabinet 게시판</div>
-            </div>
-        </header>--%>
-        <!-- Services-->
+        </nav>
+
         <div class="ui middle aligned center aligned grid">
             <div class="column">
                 <!-- <h1 class="section-heading text-uppercase" align="center">게시판</h1> -->
@@ -61,7 +54,7 @@
                         <table class="ui celled table">
                             <thead>
                                 <tr>
-                                    <%--<th width="120">번호</th>--%>
+                                    <th width="120">번호</th>
                                     <th width="150">제목</th>
                                     <th width="50">작성자</th>
                                     <th width="50">등록일</th>
@@ -72,6 +65,16 @@
                             </tbody>
                         </table>
                     </div>
+
+                    <div align="center">
+                        <nav>
+                            <ul class="pagination">
+                                <div id="pagenation_bar">
+                                </div>
+                            </ul>
+                        </nav>
+                    </div>
+
                     <div class="ui middle aligned center aligned grid" style="text-align: right">
                         <a href="/board/createBoard"><button class="btn btn-primary btn-xl text-uppercase js-scroll-trigger">게시글 작성하기</button></a>
                     </div>
@@ -80,76 +83,128 @@
                         <a href="/user/logout"><button class="btn btn-primary btn-xl text-uppercase js-scroll-trigger">로그아웃</button></a>
                     </div>
                     <div class="ui error message"></div>
-    
+
                 </div>
             </div>
         </div>
-
-    <nav><%--이거 처리하자--%>
-        <ul class="pagination">
-            <li>
-                <a href="#" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-            <li><a href="#">1</a></li>
-            <li><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#">4</a></li>
-            <li><a href="#">5</a></li>
-            <li>
-                <a href="#" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-
-        
-        <!-- Footer-->
-<%--        <footer class="footer py-4">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-lg-4 text-lg-left">Copyright © KPU Fabinet 2021</div>
-                    <div class="col-lg-4 my-3 my-lg-0">
-                        <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-twitter"></i></a>
-                        <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-facebook-f"></i></a>
-                        <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                    <div class="col-lg-4 text-lg-right">
-                        <a class="mr-3" href="#!">Privacy Policy</a>
-                        <a href="#!">Terms of Use</a>
-                    </div>
-                </div>
-            </div>
-        </footer>--%>
-
         <script>
-            $(document).ready(function() {
+            function FormatToUnixtime(unixtime) {
+                var u = new Date(unixtime);
+                console.log("u: " + u);
+                return u.getUTCFullYear() +
+                    '-' + ('0' + (u.getMonth()+1)).slice(-2) +
+                    '-' + ('0' + u.getDate()).slice(-2) +
+                    ' ' + ('0' + u.getHours()).slice(-2) +
+                    ':' + ('0' + u.getMinutes()).slice(-2)
+            };
+        </script>
+        <script>
+            function PageCall(num) {
                 $.ajax({
                     type: "get",
-                    url: "/list",
-                    success: function(data) {
-                        console.log("넘어온 값: ");
+                    url: "/list?page=" + num,
+                    success: function (data) {
+                        console.log("넘어온 값");
                         console.log(data);
+
+                        let count = data['count'];
+                        let currentPageNum = data['currentPageNum'];
+                        let startPageNum = data['startPageNum'];
+                        let endPageNum = data['endPageNum'];
+                        let next = data['next'];
+                        let prev = data['prev'];
                         let boards = data['boardVos'];
-                        //for(var ele in data['boardVos']){
-                        for (let i = 0; i < boards.length; i++) {
-                            let board_id = boards[i]['board_id'];
-                            let title = boards[i]['title'];
-                            let author = boards[i]['author'];
-                            let date = boards[i]['date'];
-                            $("#list").append(
-                                "<tr>"+
-                                // "<td>"+board_id+"</td>"+
-                                "<td><a href='/board/"+board_id+"'>"+ title+"</a></td>"+
-                                "<td>"+author+"</td>"+
-                                "<td>"+FormatToUnixtime(date)+"</td>"+
-                                "</tr>"
-                            );
+                        let entireCount = data['count'];
+
+                        $("#list").empty();
+
+                        if (boards.length == 0) {
+                            $("#list").append("<td colspan=20 style='padding:30px;'>데이터가 없습니다.</td>");
+                        } else {
+                            for (let i = 0; i < boards.length; i++) {
+                                let board_id = boards[i]['board_id'];
+                                let title = boards[i]['title'];
+                                let author = boards[i]['author'];
+                                let date = boards[i]['date'];
+                                $("#list").append(
+                                    "<tr>" +
+                                    "<td>" + (count - i - ((currentPageNum-1)*10)) + "</td>" +
+                                    /*"<td>" + board_id + "</td>" +*/
+                                    "<td><a href='/board/" + board_id + "'>" + title + "</a></td>" +
+                                    "<td>" + author + "</td>" +
+                                    "<td>" + FormatToUnixtime(date) + "</td>" +
+                                    "</tr>"
+                                );
+                            }
+                        }
+                        console.log("currentPageNum: "+currentPageNum);
+                        console.log("startPageNum: "+startPageNum);
+                        console.log("endPageNum: "+endPageNum);
+                        $("#pagenation_bar").empty();  //페이징에 필요한 객체내부를 비워준다.
+
+                        //첫페이지 돌아가기 버튼
+                        if (currentPageNum != 1) {            // 페이지가 1페이지가 아니면
+                            $("#pagenation_bar").append("<li><button onclick="+"GoPage("+1+")>맨앞으로</button></li>");        //첫페이지로가는버튼 활성화
+                        } else {
+                            $("#pagenation_bar").append("<li><button>맨앞으로</button></li>");        //첫페이지로가는버튼 비활성화
+                        }
+
+                        //11페이지부터 활성화 버튼
+                        if (prev) {            // 앞쪽으로 페이지 넘길 수 있다면
+                            $("#pagenation_bar").append("<li><button onclick="+"GoPage("+((currentPageNum-10) - (currentPageNum%10) + 1)+")>앞으로</button></li>");        //첫페이지로가는버튼 활성화
+                        } else {
+                            $("#pagenation_bar").append("<li><button>앞으로</button></li>");        //첫페이지로가는버튼 비활성화
+                        }
+
+                        //페이지 번호 출력
+                        for (var i = startPageNum; i <= endPageNum; i++) {        //시작페이지부터 종료페이지까지 반복문
+                            if (currentPageNum == i) {                            //현재페이지가 반복중인 페이지와 같다면
+                                $("#pagenation_bar").append("<li><a><strong>" + i + "</strong></a></li>");    //버튼 비활성화
+                            } else {
+                                $("#pagenation_bar").append("<li><a onclick="+"GoPage("+i+")>" + i + "</a></li>"); //버튼 활성화
+                            }
+                        }
+
+                        //11페이지쪽으로 넘어가는 버튼
+                        /*
+                        *
+                        *
+                        * 앞으로 뒤로 버튼이 안된다
+                        * 고치자
+                        *
+                        *
+                        *
+                        *
+                        *
+                        *
+                        *
+                        * */
+                        if (next) {            // 뒷쪽으로 페이지 넘길 수 있다면
+                            $("#pagenation_bar").append("<li><button onclick="+"GoPage("+((currentPageNum+10) - (currentPageNum%10) + 1) +")>뒤로</a></li>");        //첫페이지로가는버튼 활성화
+                        } else {
+                            $("#pagenation_bar").append("<li><button>뒤로</button></li>");        //첫페이지로가는버튼 비활성화
+                        }
+
+                        //맨 뒷페이지로 가는 버튼튼
+                       if (currentPageNum < endPageNum) {                //현재페이지가 전체페이지보다 작을때
+                            $("#pagenation_bar").append("<li><button onclick="+"GoPage("+(Math.ceil(count/10))+")>맨뒤로</button></li>");    //마지막페이지로 가기 버튼 활성화
+                        } else {
+                            $("#pagenation_bar").append("<li><button>맨뒤로</button></li>");        //마지막페이지로 가기 버튼 비활성화
                         }
                     }
                 });
+            }
+
+            function GoPage(num){
+                PageCall(num);
+            }
+
+        </script>
+
+        <script>
+            let num = 1;
+            $(document).ready(function() {
+                PageCall(1);
 
                 $(document).on("click", ".view_btn", function() {
                     var b_no = $(this).parent().attr("data-id");    //이거 글번호 읽기가 안된다 어케하지
@@ -175,16 +230,6 @@
                         }
                     });
                 });
-
-                function FormatToUnixtime(unixtime) {
-                    var u = new Date(unixtime);
-                    console.log("u: " + u);
-                    return u.getUTCFullYear() +
-                        '-' + ('0' + (u.getMonth()+1)).slice(-2) +
-                        '-' + ('0' + u.getDate()).slice(-2) +
-                        ' ' + ('0' + u.getHours()).slice(-2) +
-                        ':' + ('0' + u.getMinutes()).slice(-2)
-                };
             });
         </script>
 

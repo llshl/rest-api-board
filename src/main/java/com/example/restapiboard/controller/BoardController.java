@@ -40,7 +40,7 @@ public class BoardController {
     //게시글 불러오기
     @GetMapping(value = "/list")
     public ResponseEntity showAllBoard(@RequestParam(value = "page", defaultValue = "1") int page){
-        log.info("게시글 불러오기");
+        log.info(page+"페이지 게시글 불러오기");
         int count = boardService.countAllBoard();   //게시글 총 개수
         int displayPost = (page - 1) * POST_NUMBER_PER_PAGE;    //해당 페이지에 출력할 첫번째 게시글 인덱스
 

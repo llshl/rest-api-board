@@ -7,7 +7,6 @@ import com.example.restapiboard.exception.BoardException.BoardNotFoundException;
 import com.example.restapiboard.repository.BoardMapper;
 import com.example.restapiboard.repository.LikeMapper;
 import com.example.restapiboard.vo.BoardVo;
-import com.example.restapiboard.vo.BoardVo2;
 import com.example.restapiboard.vo.LikeVo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
