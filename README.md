@@ -11,10 +11,10 @@
 
 ****
 # :pushpin: 2. Feature
-* OAuth2.0(Kakao Login)
-* 페이징 구현
+* OAuth2.0 (Kakao Login)
+* Pagenation
 * Hateoas
-* Like/Dislike 기능 구현
+* Like/Dislike
 
 ****
 # :pushpin: 3. API
@@ -55,13 +55,14 @@
       
 ## 좋아요
 * 자신의 게시글과 댓글에는 수정/삭제 버튼 출력
-* 좋아요/싫어요 2번 누르면 취소됨
+* 좋아요/싫어요 횟수 게시글 당 1회 제한
+* 좋아요/싫어요 2번 누르면 토글
 * 좋아요 -> 싫어요 , 싫어요 -> 좋아요 누르면 토글
 ![게시글보기](https://user-images.githubusercontent.com/52540882/130479783-841a7959-1b50-4d7b-8f1d-23a58af565d6.PNG)
    
       
 ## HATEOAS
-* HATEOAS를 통한 상태 전이 하이퍼링크
+* HATEOAS를 통해 어플리케이션의 상태 및 전이를 표현
 ![헤테오스](https://user-images.githubusercontent.com/52540882/130479979-338e6500-17c0-428b-9cfc-6a6af2bfe546.png)
    
       
