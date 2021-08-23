@@ -52,7 +52,7 @@
    
       
 ## 게시글
-* 페이징 처리
+* 페이징 처리 (css는 굳이 신경쓰지 않았다..ㅎㅎ)
 ![홈](https://user-images.githubusercontent.com/52540882/130479778-20db4170-afca-48f0-995e-d802e79a426e.PNG)
    
       
@@ -63,12 +63,12 @@
 ![게시글보기](https://user-images.githubusercontent.com/52540882/130479783-841a7959-1b50-4d7b-8f1d-23a58af565d6.PNG)
    
       
-##HATEOAS
+## HATEOAS
 * HATEOAS를 통한 상태 전이 하이퍼링크
 ![헤테오스](https://user-images.githubusercontent.com/52540882/130479979-338e6500-17c0-428b-9cfc-6a6af2bfe546.png)
    
       
-##예외 처리
+## 예외 처리
 * ResponseEntityExceptionHandler를 사용한 예외 처리 커스터마이징
 ![예외처리](https://user-images.githubusercontent.com/52540882/130479982-bf6d6668-6c09-401d-86d7-6e132ab4f255.png)        
    
