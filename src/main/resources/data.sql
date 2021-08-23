@@ -872,43 +872,43 @@ INSERT INTO  BOARD(TITLE, AUTHOR, CONTENT, ISUPDATED, DATE)
 VALUES ('33!', 'llshl', '다들 시험 잘봤니', false, CURRENT_TIME());
 
 INSERT INTO  BOARD(TITLE, AUTHOR, CONTENT, ISUPDATED, DATE)
-VALUES ('44..', 'dogun', '취업길이 막막하구나', false, CURRENT_TIME());
+VALUES ('배고파..', 'dogun', '취업길이 막막하구나', false, CURRENT_TIME());
 
 INSERT INTO  BOARD(TITLE, AUTHOR, CONTENT, ISUPDATED, DATE)
-VALUES ('55?', 'ohgreen', '선착1명 ㄱ',  false, CURRENT_TIME());
+VALUES ('과제 어디까지지?', 'ohgreen', '선착1명 ㄱ',  false, CURRENT_TIME());
 
 INSERT INTO  BOARD(TITLE, AUTHOR, CONTENT, ISUPDATED, DATE)
-VALUES ('66', 'yum', '1등이당ㅎㅎ',  false, CURRENT_TIME());
+VALUES ('물어볼게 있는데', 'yum', '1등이당ㅎㅎ',  false, CURRENT_TIME());
 
 INSERT INTO  BOARD(TITLE, AUTHOR, CONTENT, ISUPDATED, DATE)
-VALUES ('77', 'heum', '날씨왜이래', false, CURRENT_TIME());
+VALUES ('교양 다 잡은사람?', 'heum', '날씨왜이래', false, CURRENT_TIME());
 
 INSERT INTO  BOARD(TITLE, AUTHOR, CONTENT, ISUPDATED, DATE)
-VALUES ('88!', 'llshl', '다들 시험 잘봤니', false, CURRENT_TIME());
+VALUES ('망했다진짜!', 'llshl', '다들 시험 잘봤니', false, CURRENT_TIME());
 
 INSERT INTO  BOARD(TITLE, AUTHOR, CONTENT, ISUPDATED, DATE)
-VALUES ('99..', 'dogun', '취업길이 막막하구나', false, CURRENT_TIME());
+VALUES ('어이어이..', 'dogun', '취업길이 막막하구나', false, CURRENT_TIME());
 
 INSERT INTO  BOARD(TITLE, AUTHOR, CONTENT, ISUPDATED, DATE)
-VALUES ('1010?', 'ohgreen', '선착1명 ㄱ',  false, CURRENT_TIME());
+VALUES ('지금 종합관인사람?', 'ohgreen', '선착1명 ㄱ',  false, CURRENT_TIME());
 
 INSERT INTO  BOARD(TITLE, AUTHOR, CONTENT, ISUPDATED, DATE)
-VALUES ('1111', 'yum', '1등이당ㅎㅎ',  false, CURRENT_TIME());
+VALUES ('빨리와', 'yum', '1등이당ㅎㅎ',  false, CURRENT_TIME());
 
 INSERT INTO  BOARD(TITLE, AUTHOR, CONTENT, ISUPDATED, DATE)
-VALUES ('1212', 'heum', '날씨왜이래', false, CURRENT_TIME());
+VALUES ('너무 덥다', 'heum', '날씨왜이래', false, CURRENT_TIME());
 
 INSERT INTO  BOARD(TITLE, AUTHOR, CONTENT, ISUPDATED, DATE)
-VALUES ('1313!', 'llshl', '다들 시험 잘봤니', false, CURRENT_TIME());
+VALUES ('고생했어 얘들아', 'llshl', '다들 시험 잘봤니', false, CURRENT_TIME());
 
 INSERT INTO  BOARD(TITLE, AUTHOR, CONTENT, ISUPDATED, DATE)
-VALUES ('1414..', 'dogun', '취업길이 막막하구나', false, CURRENT_TIME());
+VALUES ('큰일이야..', 'dogun', '취업길이 막막하구나', false, CURRENT_TIME());
 
 INSERT INTO  BOARD(TITLE, AUTHOR, CONTENT, ISUPDATED, DATE)
-VALUES ('1515?', 'ohgreen', '선착1명 ㄱ',  false, CURRENT_TIME());
+VALUES ('축구할사람?', 'ohgreen', '선착1명 ㄱ',  false, CURRENT_TIME());
 
 INSERT INTO  BOARD(TITLE, AUTHOR, CONTENT, ISUPDATED, DATE)
-VALUES ('1616', 'yum', '1등이당ㅎㅎ',  false, CURRENT_TIME());
+VALUES ('오늘날씨 좋네', 'yum', '1등이당ㅎㅎ',  false, CURRENT_TIME());
 
 
 
