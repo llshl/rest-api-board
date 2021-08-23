@@ -45,11 +45,13 @@
 # :pushpin: 4. Result
 ## 로그인
 * OAuth 2.0을 사용한 카카오 로그인과 일반 로그인 구현
+   
 ![로그인](https://user-images.githubusercontent.com/52540882/130479761-dba7ab5c-33e7-47d4-84c2-e78ebfbd4440.PNG)
    
       
 ## 게시글
 * 페이징 처리 (css는 굳이 신경쓰지 않았다..ㅎㅎ)
+   
 ![홈](https://user-images.githubusercontent.com/52540882/130479778-20db4170-afca-48f0-995e-d802e79a426e.PNG)
    
       
@@ -58,16 +60,19 @@
 * 좋아요/싫어요 횟수 게시글 당 1회 제한
 * 좋아요/싫어요 2번 누르면 토글
 * 좋아요 -> 싫어요 , 싫어요 -> 좋아요 누르면 토글
+   
 ![게시글보기](https://user-images.githubusercontent.com/52540882/130479783-841a7959-1b50-4d7b-8f1d-23a58af565d6.PNG)
    
       
 ## HATEOAS
 * HATEOAS를 통해 어플리케이션의 상태 및 전이를 표현
+   
 ![헤테오스](https://user-images.githubusercontent.com/52540882/130479979-338e6500-17c0-428b-9cfc-6a6af2bfe546.png)
    
       
 ## 예외 처리
 * ResponseEntityExceptionHandler를 사용한 예외 처리 커스터마이징
+   
 ![예외처리](https://user-images.githubusercontent.com/52540882/130479982-bf6d6668-6c09-401d-86d7-6e132ab4f255.png)        
    
       
