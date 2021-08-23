@@ -4,20 +4,17 @@
 * Gradle
 * Spring Security
 * MyBatis 2.2.0
-* MySQL
+* H2 Database
 
 ![rest api board erd (2)](https://user-images.githubusercontent.com/52540882/127375384-6be6398f-6809-493f-91a9-602ce3e8219f.jpg)
       
 
 ****
 # :pushpin: 2. Feature
-* Like/Dislike 기능 구현
 * OAuth2.0(Kakao Login)
 * 페이징 구현
-* Hateoas (예정)
-* Internationalization (예정)
-* Jenkins를 사용한 CI/CD 구축 (예정)
-
+* Hateoas
+* Like/Dislike 기능 구현
 
 ****
 # :pushpin: 3. API
