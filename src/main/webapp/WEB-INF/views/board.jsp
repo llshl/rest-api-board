@@ -32,20 +32,8 @@
         <sec:authentication property="principal.memberVo.nickname"/>
             님</h1>
     </div>
-        <!-- Navigation-->
-        <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
-            <div class="container">
-                <a class="navbar-brand js-scroll-trigger" href="/"><img src="assets/img/FabinetHome2.png" alt="" /></a>
-                <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"/>
-                    Menu
-                    <i class="fas fa-bars ml-1"></i>
-                </button>
-            </div>
-        </nav>
-
         <div class="ui middle aligned center aligned grid">
             <div class="column">
-                <!-- <h1 class="section-heading text-uppercase" align="center">게시판</h1> -->
                 <br>
                 <div class="ui middle aligned center aligned grid">
                     <div class="ui middle aligned center aligned grid">
@@ -66,13 +54,9 @@
                         </table>
                     </div>
 
-                    <div align="center">
-                        <nav>
-                            <ul class="pagination">
-                                <div id="pagenation_bar">
-                                </div>
+                    <div style="display: flex; justify-content: center;">
+                            <ul class="pagination" id="pagenation_bar">
                             </ul>
-                        </nav>
                     </div>
 
                     <div class="ui middle aligned center aligned grid" style="text-align: right">
@@ -87,6 +71,7 @@
                 </div>
             </div>
         </div>
+
         <script>
             function FormatToUnixtime(unixtime) {
                 var u = new Date(unixtime);
@@ -114,7 +99,6 @@
                         let next = data['next'];
                         let prev = data['prev'];
                         let boards = data['boardVos'];
-                        let entireCount = data['count'];
 
                         $("#list").empty();
 
@@ -129,7 +113,6 @@
                                 $("#list").append(
                                     "<tr>" +
                                     "<td>" + (count - i - ((currentPageNum-1)*10)) + "</td>" +
-                                    /*"<td>" + board_id + "</td>" +*/
                                     "<td><a href='/board/" + board_id + "'>" + title + "</a></td>" +
                                     "<td>" + author + "</td>" +
                                     "<td>" + FormatToUnixtime(date) + "</td>" +
@@ -165,20 +148,6 @@
                             }
                         }
 
-                        //11페이지쪽으로 넘어가는 버튼
-                        /*
-                        *
-                        *
-                        * 앞으로 뒤로 버튼이 안된다
-                        * 고치자
-                        *
-                        *
-                        *
-                        *
-                        *
-                        *
-                        *
-                        * */
                         if (next) {            // 뒷쪽으로 페이지 넘길 수 있다면
                             $("#pagenation_bar").append("<li><button onclick="+"GoPage("+((currentPageNum+10) - (currentPageNum%10) + 1) +")>뒤로</a></li>");        //첫페이지로가는버튼 활성화
                         } else {

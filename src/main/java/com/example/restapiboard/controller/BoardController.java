@@ -46,17 +46,6 @@ public class BoardController {
 
         BoardListDto boardListDto = Pagination.listPagination(page,count);  //게시글(boardVo)를 제외한 페이징 정보 갖고있다.
         boardListDto.setBoardVos(boardService.findBoards(displayPost,POST_NUMBER_PER_PAGE));     //boardVo 세팅
-
-       /* List<EntityModel> collect = boardListDto.getBoardVos().stream()
-                .map(board -> EntityModel.of(board, getLinkAddress().slash(board.getBoard_id()).withRel("get")))
-                .collect(Collectors.toList());
-
-        // 리스트를 CollectionModel로 변환. -> response body에 담는다.
-        CollectionModel entityModel = CollectionModel.of(collect,
-                getLinkAddress().slash("post").withRel("post"),
-                getLinkAddress().withSelfRel());
-        return ResponseEntity
-                .ok(entityModel);*/
         return ResponseEntity
                 .ok(boardListDto);
     }
